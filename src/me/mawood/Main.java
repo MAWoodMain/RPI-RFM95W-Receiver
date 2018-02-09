@@ -11,7 +11,7 @@ public class Main
     {
         entering();
         RFM95W rfm95w = new RFM95W();
-        rfm95w.registerInterestInMessages(m -> logger.log(Level.INFO, Arrays.toString(m)));
+        rfm95w.registerInterestInMessages(m -> logger.log(Level.INFO, m.toString()));
 
         try
         {

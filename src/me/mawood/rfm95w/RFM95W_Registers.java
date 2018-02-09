@@ -25,6 +25,7 @@ public class RFM95W_Registers
     static final byte REG_SYNC_WORD	                = 0x39;
     static final byte REG_VERSION                   = 0x42;
     static final byte REG_LR_PACONFIG               = 0x09;
+    static final byte REG_LR_PKTRSSIVALUE           = 0x1A;
 
 
     static final byte REG_FRF_MSB                   = 0x06;

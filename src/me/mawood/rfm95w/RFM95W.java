@@ -43,11 +43,14 @@ public class RFM95W
             {
                 try
                 {
-                    byte[] message = receivePkt();
+                    Message message = receivePkt();
                     listeners.forEach(l -> l.handleMessage(message));
                 } catch (IOException e)
                 {
                     e.printStackTrace();
+                } catch (MessageInvalidException e)
+                {
+                    logger.log(Level.WARNING, "CRC failed, message dropped");
                 }
             }
         });
@@ -96,60 +99,50 @@ public class RFM95W
         exiting();
     }
 
-    private byte[] receivePkt() throws IOException
+    private Message receivePkt() throws IOException, MessageInvalidException
     {
         entering();
-        if(hal.isDio0High())
+        int irqFlags = hal.readRegister(REG_IRQ_FLAGS); // if any of these are set then the inbound message failed
+        if(irqFlags != 0x00)
         {
-            int irqflags = hal.readRegister(REG_IRQ_FLAGS); // if any of these are set then the inbound message failed
-            if(irqflags != 0x00)
-            {
-                System.out.println(irqflags);
-            }
-            //Serial.println(irqflags);
-            if((irqflags & 0x40)>0)
-            {
-                System.out.println(irqflags);
-
-                // Todo: Check RXDONE interrupt
-
-                // clear the rxDone flag
-                hal.writeRegister(REG_IRQ_FLAGS, (byte)0xFF);
-
-                // check for payload crc issues (0x20 is the bit we are looking for
-                if((irqflags & 0x20) == 0x20)
-                {
-                    System.out.println("Oops there was a crc problem!!");
-                    //Serial.println(x);
-                    // reset the crc flags
-                    hal.writeRegister(REG_IRQ_FLAGS, (byte)0x20);
-                }
-                else{
-                    byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
-                    byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
-                    System.out.print("Packet! RX Current Addr:");
-                    System.out.println(currentAddr);
-                    System.out.print("Number of bytes received: ");
-                    System.out.println(receivedCount);
-                    System.out.print("Signal strength (rssi): ");
-                    System.out.print("Message: ");
-
-                    hal.writeRegister(REG_FIFO_ADDR_PTR, currentAddr);
-                    // now loop over the fifo getting the data
-                    byte[] message = new byte[256];
-                    for(int i = 0; i < receivedCount; i++)
-                    {
-                        message[i] = hal.readRegister(REG_FIFO);
-                        System.out.print(message[i]);
-                    }
-                    System.out.println("");
-                    exiting();
-                    return message;
-                }
-            }
+            logger.log(Level.FINE, "IRQ: {0}", String.format("0x%02X", irqFlags));
         }
-        exiting();
-        return new byte[0];
+
+        // if rxdone flag set
+        if((irqFlags & 0x40)>0)
+        {
+            // clear the rxDone flag
+            hal.writeRegister(REG_IRQ_FLAGS, (byte)0xFF);
+
+            // check for payload crc issues (0x20 is the bit we are looking for
+            if((irqFlags & 0x20) == 0x20)
+            {
+                logger.log(Level.FINE, "CRC Error");
+                // reset the crc flags
+                hal.writeRegister(REG_IRQ_FLAGS, (byte)0x20);
+                exiting();
+                throw new MessageInvalidException("CRC invalid");
+            }
+            else{
+                byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
+                byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
+                int rssi = hal.readRegister(REG_LR_PKTRSSIVALUE)-157;
+
+                hal.writeRegister(REG_FIFO_ADDR_PTR, currentAddr);
+                // now loop over the fifo getting the data
+                byte[] message = new byte[receivedCount];
+                for(int i = 0; i < receivedCount; i++)
+                {
+                    message[i] = hal.readRegister(REG_FIFO);
+                }
+                exiting();
+                return new Message(message, rssi);
+            }
+        } else
+        {
+            exiting();
+            throw new MessageInvalidException("Message not received");
+        }
     }
 
     private void setMode(OperatingMode mode) throws IOException
