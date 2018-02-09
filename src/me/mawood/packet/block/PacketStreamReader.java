@@ -90,9 +90,9 @@ public class PacketStreamReader
             Constructor<?> ctor = segmentClass.getConstructor(Block[].class);
             Segment segment = (Segment) ctor.newInstance(new Object[] { blocks });
             return segment;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e)
+        } catch (Exception e)
         {
-            throw new InvalidSegmentException("Could not locate constructor or construct the segment");
+            throw new InvalidSegmentException("Could not locate constructor or construct the segment, error: " + e.getMessage());
         }
     }
 
@@ -104,9 +104,9 @@ public class PacketStreamReader
             Constructor<?> ctor = blockClass.getConstructor(byte[].class);
             Block block = (Block)ctor.newInstance(new Object[] { blockData });
             return block;
-        } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e)
+        } catch (Exception e)
         {
-            throw new InvalidBlockException("Could not locate constructor or construct the block");
+            throw new InvalidBlockException("Could not locate constructor or construct the block, error: " + e.getMessage());
         }
     }
 }
