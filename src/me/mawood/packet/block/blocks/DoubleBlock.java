@@ -33,4 +33,16 @@ public class DoubleBlock extends Block<Double>
                 "value=" + value +
                 '}';
     }
+
+    public static DoubleBlock fromData(double value)
+    {
+        try
+        {
+            return new DoubleBlock(ByteBuffer.allocate(8).putDouble(value).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -32,4 +32,16 @@ public class FloatBlock extends Block<Float>
                 "value=" + value +
                 '}';
     }
+
+    public static FloatBlock fromData(float value)
+    {
+        try
+        {
+            return new FloatBlock(ByteBuffer.allocate(4).putFloat(value).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

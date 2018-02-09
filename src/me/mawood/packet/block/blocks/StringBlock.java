@@ -3,6 +3,8 @@ package me.mawood.packet.block.blocks;
 import me.mawood.packet.block.Block;
 import me.mawood.packet.block.InvalidBlockException;
 
+import java.nio.ByteBuffer;
+
 public class StringBlock extends Block<String>
 {
     public static final byte[] TYPE_FLAG = {0x10};
@@ -27,5 +29,17 @@ public class StringBlock extends Block<String>
         return "StringBlock{" +
                 "value='" + value + '\'' +
                 '}';
+    }
+
+    public static StringBlock fromData(String value)
+    {
+        try
+        {
+            return new StringBlock(ByteBuffer.allocate(value.getBytes().length).put(value.getBytes()).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -27,4 +27,16 @@ public class BlobBlock extends Block<byte[]>
                 "data=" + Arrays.toString(data) +
                 '}';
     }
+
+    public static BlobBlock fromData(byte[] value)
+    {
+        try
+        {
+            return new BlobBlock(value);
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -33,4 +33,16 @@ public class LongBlock extends Block<Long>
                 "value=" + value +
                 '}';
     }
+
+    public static LongBlock fromData(long value)
+    {
+        try
+        {
+            return new LongBlock(ByteBuffer.allocate(8).putLong(value).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

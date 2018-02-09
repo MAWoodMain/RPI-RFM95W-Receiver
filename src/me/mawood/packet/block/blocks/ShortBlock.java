@@ -33,4 +33,16 @@ public class ShortBlock extends Block<Short>
                 "value=" + value +
                 '}';
     }
+
+    public static ShortBlock fromData(short value)
+    {
+        try
+        {
+            return new ShortBlock(ByteBuffer.allocate(2).putShort(value).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

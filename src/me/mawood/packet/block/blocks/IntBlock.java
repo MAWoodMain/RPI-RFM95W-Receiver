@@ -33,4 +33,16 @@ public class IntBlock extends Block<Integer>
                 "value=" + value +
                 '}';
     }
+
+    public static IntBlock fromData(int value)
+    {
+        try
+        {
+            return new IntBlock(ByteBuffer.allocate(4).putInt(value).array());
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

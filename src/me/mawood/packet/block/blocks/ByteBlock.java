@@ -25,4 +25,16 @@ public class ByteBlock extends Block<Byte>
                 "value=" + String.format("0x%02X", data[0]) +
                 '}';
     }
+
+    public static ByteBlock fromData(byte value)
+    {
+        try
+        {
+            return new ByteBlock(new byte[]{value});
+        } catch (InvalidBlockException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
