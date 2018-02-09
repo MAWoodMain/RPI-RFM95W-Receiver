@@ -2,7 +2,7 @@ package me.mawood;
 
 import static me.mawood.Logging.*;
 import me.mawood.rfm95w.RFM95W;
-import java.util.Arrays;
+
 import java.util.logging.Level;
 
 public class Main

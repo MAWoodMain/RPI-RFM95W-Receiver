@@ -1,5 +1,7 @@
-package me.mawood.packet.block;
+package me.mawood.packet;
 
+import me.mawood.packet.block.Block;
+import me.mawood.packet.block.InvalidBlockException;
 import me.mawood.packet.block.blocks.Blocks;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
@@ -7,9 +9,7 @@ import me.mawood.packet.segment.segments.Segments;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 import static me.mawood.Logging.logger;
@@ -44,15 +44,17 @@ public class PacketStreamReader
                         Class segmentClass = Segments.getSegmentClass(id);
                         // acquire blocks before instantiation
                         ArrayList<Block> blocks = new ArrayList<>();
-                        curr = 0x00;
+                        curr = (byte) stream.read();
                         while(curr != Segment.SEGMENT_FLAG && stream.available() > 0)
                         {
                             id = new byte[Block.TYPE_FLAG_LENGTH];
-                            stream.read(id,0,Block.TYPE_FLAG_LENGTH);
+                            id[0] = curr;
+                            stream.read(id,1,Block.TYPE_FLAG_LENGTH-1);
                             blockLen = (short) stream.read();
                             blockData = new byte[blockLen];
                             stream.read(blockData, 0, blockLen);
                             blocks.add(interpretBlock(id,blockData));
+                            curr = (byte) stream.read();
                         }
                         // blocks created, time to create segment
                         try

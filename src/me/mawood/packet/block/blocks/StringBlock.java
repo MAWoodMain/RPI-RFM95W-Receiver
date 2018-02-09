@@ -3,8 +3,6 @@ package me.mawood.packet.block.blocks;
 import me.mawood.packet.block.Block;
 import me.mawood.packet.block.InvalidBlockException;
 
-import java.util.Arrays;
-
 public class StringBlock extends Block<String>
 {
     public static final byte[] TYPE_FLAG = {0x10};

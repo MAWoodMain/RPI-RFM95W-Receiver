@@ -6,7 +6,8 @@ import java.util.Arrays;
 
 public enum Segments
 {
-    GPS_SEGMENT(GpsSegment.TYPE_FLAG, GpsSegment.class);
+    GPS_SEGMENT(GpsSegment.TYPE_FLAG, GpsSegment.class),
+    BATTERY_SEGMENT(BatterySegment.TYPE_FLAG, BatterySegment.class);
 
     final byte[] segmentId;
     final Class segmentClass;

@@ -1,7 +1,5 @@
 package me.mawood.rfm95w;
 
-import java.util.Arrays;
-
 public class Message
 {
     private final byte[] message;
