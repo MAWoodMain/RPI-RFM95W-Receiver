@@ -8,20 +8,20 @@ import java.nio.ByteBuffer;
 /**
  * 4 byte integer block
  */
-public class IntBlock extends Block<Integer>
+public class ShortBlock extends Block<Short>
 {
-    public static final byte[] TYPE_FLAG = {0x03};
-    private final int value;
+    public static final byte[] TYPE_FLAG = {0x02};
+    private final short value;
 
-    public IntBlock(byte[] data) throws InvalidBlockException
+    public ShortBlock(byte[] data) throws InvalidBlockException
     {
         super(data);
         ByteBuffer buffer = ByteBuffer.wrap(data);
-        value = buffer.getInt();
+        value = buffer.getShort();
     }
 
     @Override
-    public Integer getData()
+    public Short getData()
     {
         return value;
     }
@@ -29,7 +29,7 @@ public class IntBlock extends Block<Integer>
     @Override
     public String toString()
     {
-        return "IntBlock{" +
+        return "ShortBlock{" +
                 "value=" + value +
                 '}';
     }

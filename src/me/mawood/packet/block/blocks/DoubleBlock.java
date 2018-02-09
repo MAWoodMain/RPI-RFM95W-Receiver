@@ -6,22 +6,22 @@ import me.mawood.packet.block.InvalidBlockException;
 import java.nio.ByteBuffer;
 
 /**
- * 4 byte integer block
+ * 4 byte float block
  */
-public class IntBlock extends Block<Integer>
+public class DoubleBlock extends Block<Double>
 {
-    public static final byte[] TYPE_FLAG = {0x03};
-    private final int value;
+    public static final byte[] TYPE_FLAG = {0x06};
+    private final double value;
 
-    public IntBlock(byte[] data) throws InvalidBlockException
+    public DoubleBlock(byte[] data) throws InvalidBlockException
     {
         super(data);
         ByteBuffer buffer = ByteBuffer.wrap(data);
-        value = buffer.getInt();
+        value = buffer.getDouble();
     }
 
     @Override
-    public Integer getData()
+    public Double getData()
     {
         return value;
     }
@@ -29,7 +29,7 @@ public class IntBlock extends Block<Integer>
     @Override
     public String toString()
     {
-        return "IntBlock{" +
+        return "DoubleBlock{" +
                 "value=" + value +
                 '}';
     }

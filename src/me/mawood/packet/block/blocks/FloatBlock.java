@@ -4,24 +4,23 @@ import me.mawood.packet.block.Block;
 import me.mawood.packet.block.InvalidBlockException;
 
 import java.nio.ByteBuffer;
-
 /**
- * 4 byte integer block
+ * 4 byte float block
  */
-public class IntBlock extends Block<Integer>
+public class FloatBlock extends Block<Float>
 {
-    public static final byte[] TYPE_FLAG = {0x03};
-    private final int value;
+    public static final byte[] TYPE_FLAG = {0x05};
+    private final float value;
 
-    public IntBlock(byte[] data) throws InvalidBlockException
+    public FloatBlock(byte[] data) throws InvalidBlockException
     {
         super(data);
         ByteBuffer buffer = ByteBuffer.wrap(data);
-        value = buffer.getInt();
+        value = buffer.getFloat();
     }
 
     @Override
-    public Integer getData()
+    public Float getData()
     {
         return value;
     }
@@ -29,7 +28,7 @@ public class IntBlock extends Block<Integer>
     @Override
     public String toString()
     {
-        return "IntBlock{" +
+        return "FloatBlock{" +
                 "value=" + value +
                 '}';
     }

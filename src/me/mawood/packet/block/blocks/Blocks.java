@@ -6,7 +6,15 @@ import java.util.Arrays;
 
 public enum Blocks
 {
-    INT_BLOCK(IntBlock.TYPE_FLAG, IntBlock.class);
+    BLOB_BLOCK(BlobBlock.TYPE_FLAG, BlobBlock.class),       // 0x00
+
+    BYTE_BLOCK(ByteBlock.TYPE_FLAG, ByteBlock.class),       // 0x01
+    SHORT_BLOCK(ShortBlock.TYPE_FLAG, ShortBlock.class),    // 0x02
+    INT_BLOCK(IntBlock.TYPE_FLAG, IntBlock.class),          // 0x03
+    LONG_BLOCK(LongBlock.TYPE_FLAG, LongBlock.class),       // 0x04
+
+    FLOAT_BLOCK(FloatBlock.TYPE_FLAG, FloatBlock.class),    // 0x05
+    DOUBLE_BLOCK(DoubleBlock.TYPE_FLAG, DoubleBlock.class); // 0x06
 
     final byte[] blockId;
     final Class blockClass;
