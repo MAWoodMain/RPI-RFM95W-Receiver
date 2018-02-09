@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import static me.mawood.Logging.logger;
@@ -97,8 +98,6 @@ public class PacketStreamReader
 
     private Block interpretBlock(byte[] blockId, byte[] blockData) throws InvalidBlockException
     {
-
-
         try
         {
             Class blockClass = Blocks.getBlockClass(blockId);

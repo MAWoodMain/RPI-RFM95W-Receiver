@@ -14,7 +14,9 @@ public enum Blocks
     LONG_BLOCK(LongBlock.TYPE_FLAG, LongBlock.class),       // 0x04
 
     FLOAT_BLOCK(FloatBlock.TYPE_FLAG, FloatBlock.class),    // 0x05
-    DOUBLE_BLOCK(DoubleBlock.TYPE_FLAG, DoubleBlock.class); // 0x06
+    DOUBLE_BLOCK(DoubleBlock.TYPE_FLAG, DoubleBlock.class), // 0x06
+
+    STRING_BLOCK(StringBlock.TYPE_FLAG, StringBlock.class); // 0x10
 
     final byte[] blockId;
     final Class blockClass;
