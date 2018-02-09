@@ -72,30 +72,26 @@ public class RFM95W
         hal.writeRegister(REG_FRF_MID, (byte)(frf >> 8));
         hal.writeRegister(REG_FRF_LSB, (byte)(frf));
 
+        hal.writeRegister(REG_MODEM_CONFIG, (byte)0x72);
+        hal.writeRegister(REG_MODEM_CONFIG2, (byte)0x84);
+        hal.writeRegister(REG_LR_PARAMP,(byte)0x08);
+        hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)0x25);
+
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word
 
-        if (SPREADING_FACTOR == 11 || SPREADING_FACTOR == 12) {
-            hal.writeRegister(REG_MODEM_CONFIG3,(byte)0x0C);
-        } else {
-            hal.writeRegister(REG_MODEM_CONFIG3,(byte)0x04);
-        }
+        hal.writeRegister(REG_DIO_MAPPING_1, (byte)0x00);
+        hal.writeRegister(REG_DIO_MAPPING_2, (byte)0x00);
 
-        hal.writeRegister(REG_MODEM_CONFIG, (byte)0x74);
-        hal.writeRegister(REG_MODEM_CONFIG2,(byte)((SPREADING_FACTOR<<4) | 0x04));
+        setMode(OperatingMode.SX72_MODE_STANDBY);
 
-        if (SPREADING_FACTOR == 10 || SPREADING_FACTOR == 11 || SPREADING_FACTOR == 12) {
-            hal.writeRegister(REG_SYMB_TIMEOUT_LSB,(byte)0x05);
-        } else {
-            hal.writeRegister(REG_SYMB_TIMEOUT_LSB,(byte)0x08);
-        }
-        hal.writeRegister(REG_MAX_PAYLOAD_LENGTH,(byte)0x80);
-        hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)64);
-        hal.writeRegister(REG_HOP_PERIOD,(byte)0xFF);
-        hal.writeRegister(REG_FIFO_ADDR_PTR, hal.readRegister(REG_FIFO_RX_BASE_AD));
+        hal.writeRegister(REG_FIFO_ADDR_PTR, (byte)0x00);//hal.readRegister(REG_FIFO_RX_BASE_AD)
 
-        hal.writeRegister(REG_LNA, LNA_MAX_GAIN);  // max lna gain
-        Thread.sleep(500);
+        hal.writeRegister(REG_LR_PACONFIG, PA_OFF_BOOST);   // TURN PA OFF FOR RECIEVE?
+        hal.writeRegister(REG_LNA, LNA_MAX_GAIN);        // MAX GAIN FOR RECIEVE
         setMode(OperatingMode.SX72_MODE_RX_CONTINUOUS);
+
+        hal.writeRegister(REG_IRQ_FLAGS, (byte)0xff);
+
         logger.log(Level.INFO, "RFM95W setup complete");
         exiting();
     }
@@ -103,35 +99,57 @@ public class RFM95W
     private byte[] receivePkt() throws IOException
     {
         entering();
-        //if(!hal.isDio0High()) return new byte[0];
-
-        // clear rxDone
-
-        byte irqflags = hal.readRegister(REG_IRQ_FLAGS);
-        hal.writeRegister(REG_IRQ_FLAGS, (byte)0xFF);
-
-        logger.log(Level.FINE,"irq: %02x\n\r", irqflags);
-        //  payload crc: 0x20
-        if((irqflags & 0x20) == 0x20)
+        if(hal.isDio0High())
         {
-            logger.log(Level.WARNING,"CRC error");
-            hal.writeRegister(REG_IRQ_FLAGS, (byte)0x20);
-            exiting();
-            return new byte[0];
-        } else {
-
-            byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
-            byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
-            logger.log(Level.FINE, "Received count: %d\n\r", receivedCount);
-            hal.writeRegister(REG_FIFO_ADDR_PTR, currentAddr);
-            byte[] packet = new byte[receivedCount];
-            for(int i = 0; i < receivedCount; i++)
+            int irqflags = hal.readRegister(REG_IRQ_FLAGS); // if any of these are set then the inbound message failed
+            if(irqflags != 0x00)
             {
-                packet[i] = hal.readRegister(REG_FIFO);
+                System.out.println(irqflags);
             }
-            exiting();
-            return packet;
+            //Serial.println(irqflags);
+            if((irqflags & 0x40)>0)
+            {
+                System.out.println(irqflags);
+
+                // Todo: Check RXDONE interrupt
+
+                // clear the rxDone flag
+                hal.writeRegister(REG_IRQ_FLAGS, (byte)0xFF);
+
+                // check for payload crc issues (0x20 is the bit we are looking for
+                if((irqflags & 0x20) == 0x20)
+                {
+                    System.out.println("Oops there was a crc problem!!");
+                    //Serial.println(x);
+                    // reset the crc flags
+                    hal.writeRegister(REG_IRQ_FLAGS, (byte)0x20);
+                }
+                else{
+                    byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
+                    byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
+                    System.out.print("Packet! RX Current Addr:");
+                    System.out.println(currentAddr);
+                    System.out.print("Number of bytes received: ");
+                    System.out.println(receivedCount);
+                    System.out.print("Signal strength (rssi): ");
+                    System.out.print("Message: ");
+
+                    hal.writeRegister(REG_FIFO_ADDR_PTR, currentAddr);
+                    // now loop over the fifo getting the data
+                    byte[] message = new byte[256];
+                    for(int i = 0; i < receivedCount; i++)
+                    {
+                        message[i] = hal.readRegister(REG_FIFO);
+                        System.out.print(message[i]);
+                    }
+                    System.out.println("");
+                    exiting();
+                    return message;
+                }
+            }
         }
+        exiting();
+        return new byte[0];
     }
 
     private void setMode(OperatingMode mode) throws IOException
@@ -147,5 +165,10 @@ public class RFM95W
         entering();
         listeners.add(listener);
         exiting();
+    }
+
+    public byte readIRQ() throws IOException
+    {
+        return hal.readRegister(REG_IRQ_FLAGS);
     }
 }

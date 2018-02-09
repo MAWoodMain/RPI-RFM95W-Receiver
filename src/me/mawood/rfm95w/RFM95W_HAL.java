@@ -31,13 +31,17 @@ public class RFM95W_HAL implements GpioPinListenerDigital
         final GpioController gpio = GpioFactory.getInstance();
         reset = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "rst", PinState.LOW);
         dio0 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "dio0");
-        dio0.isPullResistance(PinPullResistance.PULL_DOWN);
+        dio0.setPullResistance(PinPullResistance.PULL_DOWN);
         exiting();
     }
 
     protected byte readRegister(byte register) throws IOException
     {
         entering();
+        try
+        {
+            Thread.sleep(50);
+        } catch (InterruptedException ignored) {}
         logger.log(Level.FINER, "Reading register {0}", String.format("0x%02X", register));
         byte[] data = {(byte)(register & 0x7F),(byte)0x00};
         byte[] response = spi.write(data);
@@ -49,6 +53,10 @@ public class RFM95W_HAL implements GpioPinListenerDigital
     protected void writeRegister(byte register, byte value) throws IOException
     {
         entering();
+        try
+        {
+            Thread.sleep(50);
+        } catch (InterruptedException ignored) {}
         logger.log(Level.FINER, "Writing {0}", String.format("0x%02X to 0x%02X", value, register));
         byte[] data = {(byte)(register | 0x80), value};
         spi.write(data);

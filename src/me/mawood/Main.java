@@ -17,7 +17,7 @@ public class Main
         {
             while(true)
             {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }
         } catch (InterruptedException e)
         {
