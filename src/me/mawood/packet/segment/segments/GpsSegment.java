@@ -1,6 +1,7 @@
-package me.mawood.packet.segment;
+package me.mawood.packet.segment.segments;
 
 import me.mawood.packet.block.Block;
+import me.mawood.packet.segment.Segment;
 
 import java.util.Arrays;
 

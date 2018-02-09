@@ -1,4 +1,6 @@
-package me.mawood.packet.block;
+package me.mawood.packet.block.blocks;
+
+import me.mawood.packet.block.InvalidBlockException;
 
 import java.util.Arrays;
 

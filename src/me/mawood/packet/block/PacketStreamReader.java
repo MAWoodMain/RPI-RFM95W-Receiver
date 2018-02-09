@@ -1,14 +1,14 @@
 package me.mawood.packet.block;
 
+import me.mawood.packet.block.blocks.Blocks;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
-import me.mawood.packet.segment.Segments;
+import me.mawood.packet.segment.segments.Segments;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 import static me.mawood.Logging.logger;

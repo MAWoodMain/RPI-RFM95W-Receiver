@@ -1,6 +1,5 @@
-package me.mawood.packet.segment;
+package me.mawood.packet.segment.segments;
 
-import me.mawood.packet.block.Blocks;
 import me.mawood.packet.block.InvalidBlockException;
 
 import java.util.Arrays;
