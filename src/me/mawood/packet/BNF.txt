@@ -1,0 +1,27 @@
+/*  http://www.bottlecaps.de/rr/ui  */
+
+Packet  ::= Section*
+Section ::= SectionFlag SectionID (Block)*
+
+SectionFlag ::= '0xAA'
+SectionID ::= Byte Byte
+
+Block   ::= BlockID DataLength Data
+
+BlockID ::= Byte
+DataLength ::= Byte
+
+/*
+https://tabatkins.github.io/railroad-diagrams/generator.html
+
+Diagram(
+  OneOrMore(
+    Sequence(
+      NonTerminal('Segment Flag (1 byte, 0xAA)'),
+      NonTerminal('Segment ID (2 bytes)'),
+      OneOrMore(
+        Sequence(
+          NonTerminal('Block Id (1 byte)'),
+          NonTerminal('Block Data Length (1 byte)'),
+          NonTerminal('Block Data (specified bytes)'))))))
+*/
