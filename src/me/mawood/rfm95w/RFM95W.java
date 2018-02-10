@@ -31,11 +31,11 @@ public class RFM95W
     }
 
     private static final long FREQUENCY = 868100000; // in Mhz! (868.1)
-    private static final int SPREADING_FACTOR = 8;
+    private static final byte PAYLOAD_LENGTH = 64;
 
     private EnumSet<ModemConfig1> modemConfig1 = EnumSet.of(ModemConfig1.BW_125KHZ, ModemConfig1.CR_4_5, ModemConfig1.EXPLICIT_HEADER_MODE);
     private EnumSet<ModemConfig2> modemConfig2 = EnumSet.of(ModemConfig2.SF_8, ModemConfig2.TX_NORMAL_MODE, ModemConfig2.RX_PAYLOAD_CRC_ON);
-    private EnumSet<PaRamp> paRamp = EnumSet.of(PaRamp.PR_50US);
+    private EnumSet<PaRamp> paRamp = EnumSet.of(PaRamp.PR_50US, PaRamp.MS_NO_SHAPING);
 
     private final RFM95W_HAL hal;
     private final ArrayList<MessageReceivedListener> listeners;
@@ -85,11 +85,10 @@ public class RFM95W
         hal.writeRegister(REG_FRF_MID, (byte)(frf >> 8));
         hal.writeRegister(REG_FRF_LSB, (byte)(frf));
 
-        //hal.writeRegister(REG_MODEM_CONFIG, (byte)0x72);
         hal.writeRegister(REG_MODEM_CONFIG, ModemConfig1.getRegister(modemConfig1));
         hal.writeRegister(REG_MODEM_CONFIG2, ModemConfig2.getRegister(modemConfig2));
         hal.writeRegister(REG_LR_PARAMP,PaRamp.getRegister(paRamp));
-        hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)64);
+        hal.writeRegister(REG_PAYLOAD_LENGTH, PAYLOAD_LENGTH);
 
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word
 

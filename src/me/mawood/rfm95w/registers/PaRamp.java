@@ -19,7 +19,12 @@ public enum PaRamp
     PR_20US(0x0C,0x01),
     PR_15US(0x0D,0x01),
     PR_12US(0x0E,0x01),
-    PR_10US(0x0F,0x01);
+    PR_10US(0x0F,0x01),
+
+    MS_NO_SHAPING(0x00 << 5, 0x02),
+    MS_GF_1_OR_CUTOFF_BR(0x01 << 5, 0x02),
+    MS_GF_0_5_OR_CUTOFF_2BR(0x02 << 5, 0x02),
+    MS_GF_0_3(0x03 << 5, 0x02);
 
     final byte mask;
     final byte set;
