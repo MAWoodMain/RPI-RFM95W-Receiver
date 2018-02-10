@@ -3,6 +3,7 @@ package me.mawood.rfm95w;
 import me.mawood.rfm95w.registers.InvalidRegisterConfigurationException;
 import me.mawood.rfm95w.registers.ModemConfig1;
 import me.mawood.rfm95w.registers.ModemConfig2;
+import me.mawood.rfm95w.registers.PaRamp;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class RFM95W
 
     private EnumSet<ModemConfig1> modemConfig1 = EnumSet.of(ModemConfig1.BW_125KHZ, ModemConfig1.CR_4_5, ModemConfig1.EXPLICIT_HEADER_MODE);
     private EnumSet<ModemConfig2> modemConfig2 = EnumSet.of(ModemConfig2.SF_8, ModemConfig2.TX_NORMAL_MODE, ModemConfig2.RX_PAYLOAD_CRC_ON);
+    private EnumSet<PaRamp> paRamp = EnumSet.of(PaRamp.PR_50US);
 
     private final RFM95W_HAL hal;
     private final ArrayList<MessageReceivedListener> listeners;
@@ -86,7 +88,7 @@ public class RFM95W
         //hal.writeRegister(REG_MODEM_CONFIG, (byte)0x72);
         hal.writeRegister(REG_MODEM_CONFIG, ModemConfig1.getRegister(modemConfig1));
         hal.writeRegister(REG_MODEM_CONFIG2, ModemConfig2.getRegister(modemConfig2));
-        hal.writeRegister(REG_LR_PARAMP,(byte)0x08);
+        hal.writeRegister(REG_LR_PARAMP,PaRamp.getRegister(paRamp));
         hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)64);
 
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word
