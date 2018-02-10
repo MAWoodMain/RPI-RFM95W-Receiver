@@ -25,9 +25,16 @@ public class PacketStreamReader
         return new ByteArrayInputStream(data);
     }
 
-    public PacketStreamReader(ByteArrayInputStream stream)
+    public PacketStreamReader(ByteArrayInputStream stream) throws PacketException
     {
         segments = new ArrayList<>();
+
+        if (stream.available() < 3) throw new PacketException("Packet is too short");
+        byte protocolId = (byte) stream.read();
+        int versionId = (byte) stream.read();
+        if(protocolId != (byte)0xDA) throw new PacketException("Unknown protocol ID " + String.format("0x%02X", protocolId));
+        if(versionId < 0x01) throw new PacketException("Unknown version of protocol " + String.format("0x%02X", versionId));
+
         byte curr = (byte) stream.read();
         short blockLen;
         byte[] id, blockData;
@@ -75,7 +82,8 @@ public class PacketStreamReader
 
 
                 default:
-                    logger.log(Level.WARNING, "Unknown packet flag {0}", String.format("0x%02X", curr));
+                    logger.log(Level.FINER, "Unknown packet flag {0}", String.format("0x%02X", curr));
+                    if (stream.available() > 0) curr = (byte) stream.read();
             }
         }
     }
@@ -94,7 +102,7 @@ public class PacketStreamReader
             return segment;
         } catch (Exception e)
         {
-            throw new InvalidSegmentException("Could not locate constructor or construct the segment, error: " + e.getMessage());
+            throw new InvalidSegmentException("Could not locate constructor or construct the segment, error: " + e.getCause().getMessage());
         }
     }
 
