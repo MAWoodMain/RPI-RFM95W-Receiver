@@ -1,6 +1,5 @@
 package me.mawood.packet;
 
-import me.mawood.packet.block.InvalidBlockException;
 import me.mawood.packet.block.blocks.DoubleBlock;
 
 import java.util.Arrays;
