@@ -14,8 +14,11 @@ DataLength ::= Byte
 /*
 https://tabatkins.github.io/railroad-diagrams/generator.html
 
+
 Diagram(
     Sequence(
+      ZeroOrMore(
+      NonTerminal('0x00')),
       NonTerminal('Protocol ID (1 byte, 0xDA)'),
       NonTerminal('Protocol Version (1 byte)'),
       OneOrMore(
@@ -26,5 +29,5 @@ Diagram(
             Sequence(
               NonTerminal('Block Id (1 byte)'),
               NonTerminal('Block Data Length (1 byte)'),
-              NonTerminal('Block Data (specified bytes)')))))))
+              NonTerminal('Block Data (specified bytes)')))))))s
 */
