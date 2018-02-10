@@ -45,4 +45,13 @@ public class IntBlock extends Block<Integer>
             return null;
         }
     }
+
+    public byte[] getBytes()
+    {
+        ByteBuffer buffer = ByteBuffer.allocate(6);
+        buffer.put(TYPE_FLAG);
+        buffer.put((byte) 0x04);
+        buffer.put(data);
+        return buffer.array();
+    }
 }

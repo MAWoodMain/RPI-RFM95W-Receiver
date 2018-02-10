@@ -42,4 +42,13 @@ public class StringBlock extends Block<String>
             return null;
         }
     }
+
+    public byte[] getBytes()
+    {
+        ByteBuffer buffer = ByteBuffer.allocate(data.length + 2);
+        buffer.put(TYPE_FLAG);
+        buffer.put((byte) data.length);
+        buffer.put(data);
+        return buffer.array();
+    }
 }

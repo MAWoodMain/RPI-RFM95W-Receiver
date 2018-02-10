@@ -16,7 +16,7 @@ public class PacketTestMain
                 "0608403e000000000000" +
                 "AA000202020120");
         System.out.println(Arrays.toString(new PacketStreamReader(PacketStreamReader.bytesToStream(data)).getSegments()));
-        System.out.println(bytesToHex(DoubleBlock.fromData(30.0f).getDataRaw()));
+        System.out.println(bytesToHex(DoubleBlock.fromData(30.0f).getBytes()));
     }
 
     private static byte[] hexStringToByteArray(String s) {

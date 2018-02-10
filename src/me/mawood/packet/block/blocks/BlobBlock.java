@@ -3,6 +3,7 @@ package me.mawood.packet.block.blocks;
 import me.mawood.packet.block.Block;
 import me.mawood.packet.block.InvalidBlockException;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class BlobBlock extends Block<byte[]>
@@ -38,5 +39,14 @@ public class BlobBlock extends Block<byte[]>
             e.printStackTrace();
             return null;
         }
+    }
+
+    public byte[] getBytes()
+    {
+        ByteBuffer buffer = ByteBuffer.allocate(data.length + 2);
+        buffer.put(TYPE_FLAG);
+        buffer.put((byte) data.length);
+        buffer.put(data);
+        return buffer.array();
     }
 }

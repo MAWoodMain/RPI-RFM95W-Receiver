@@ -45,4 +45,13 @@ public class LongBlock extends Block<Long>
             return null;
         }
     }
+
+    public byte[] getBytes()
+    {
+        ByteBuffer buffer = ByteBuffer.allocate(10);
+        buffer.put(TYPE_FLAG);
+        buffer.put((byte) 0x08);
+        buffer.put(data);
+        return buffer.array();
+    }
 }

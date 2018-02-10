@@ -45,4 +45,13 @@ public class ShortBlock extends Block<Short>
             return null;
         }
     }
+
+    public byte[] getBytes()
+    {
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.put(TYPE_FLAG);
+        buffer.put((byte) 0x02);
+        buffer.put(data);
+        return buffer.array();
+    }
 }
