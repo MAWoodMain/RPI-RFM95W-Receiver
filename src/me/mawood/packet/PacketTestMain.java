@@ -9,11 +9,12 @@ public class PacketTestMain
     public static void main(String[] args)
     {
         byte[] data = hexStringToByteArray(
-                "AA0001" +
-                "0608404977AF4ADBC665" +
-                "0608BFF6574927913E81" +
-                "0608403e000000000000" +
-                "AA000202020120");
+                "AA0001" +               // GPS segment preamble (id 0x0001)
+                "0608404977AF4ADBC665" +    // DoubleBlock (50.935037)
+                "0608BFF6574927913E81" +    // DoubleBlock (-1.39631)
+                "0608403e000000000000" +    // DoubleBlock (30.0)
+                "AA0002" +                  // Battery segment preamble (id 0x0002)
+                "02020120");                // ShortBlock (288)
         System.out.println(Arrays.toString(new PacketStreamReader(PacketStreamReader.bytesToStream(data)).getSegments()));
         System.out.println(bytesToHex(DoubleBlock.fromData(30.0f).getBytes()));
     }
