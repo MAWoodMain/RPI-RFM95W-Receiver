@@ -16,6 +16,8 @@ public class PacketTestMain
                 "AA0002" +                  // Battery segment preamble (id 0x0002)
                 "02020120");                // ShortBlock (288)
         System.out.println(Arrays.toString(new PacketStreamReader(PacketStreamReader.bytesToStream(data)).getSegments()));
+
+        // test code fo generating DoubleBlock
         System.out.println(bytesToHex(DoubleBlock.fromData(30.0f).getBytes()));
     }
 
