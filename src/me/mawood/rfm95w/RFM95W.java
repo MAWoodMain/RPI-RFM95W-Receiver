@@ -78,7 +78,7 @@ public class RFM95W
         hal.writeRegister(REG_MODEM_CONFIG, (byte)0x72);
         hal.writeRegister(REG_MODEM_CONFIG2, (byte)0x84);
         hal.writeRegister(REG_LR_PARAMP,(byte)0x08);
-        hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)0x25);
+        hal.writeRegister(REG_PAYLOAD_LENGTH, (byte)64);
 
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word
 

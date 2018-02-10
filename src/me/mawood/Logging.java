@@ -4,7 +4,7 @@ import java.util.logging.*;
 
 public class Logging
 {
-    private static final Level LOGGING_LEVEL = Level.FINER;
+    private static final Level LOGGING_LEVEL = Level.FINE;
     public static final Logger logger = Logger.getLogger("RFM95W");
 
     static

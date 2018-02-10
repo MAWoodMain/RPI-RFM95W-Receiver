@@ -20,22 +20,22 @@ public class PacketStreamReader
 
     private ArrayList<Segment> segments;
 
-    public static ByteArrayInputStream bytesToStream(byte[] data)
+    public PacketStreamReader(byte[] data) throws PacketException
     {
-        return new ByteArrayInputStream(data);
+        this(new ByteArrayInputStream(data));
     }
 
     public PacketStreamReader(ByteArrayInputStream stream) throws PacketException
     {
+        byte curr = (byte) stream.read();
         segments = new ArrayList<>();
-
-        if (stream.available() < 3) throw new PacketException("Packet is too short");
-        byte protocolId = (byte) stream.read();
+        while(stream.available() > 0 && curr == 0x00) curr = (byte) stream.read();
+        if (stream.available() < 2) throw new PacketException("Packet is too short");
+        byte protocolId = curr;
         int versionId = (byte) stream.read();
         if(protocolId != (byte)0xDA) throw new PacketException("Unknown protocol ID " + String.format("0x%02X", protocolId));
         if(versionId < 0x01) throw new PacketException("Unknown version of protocol " + String.format("0x%02X", versionId));
-
-        byte curr = (byte) stream.read();
+        curr = (byte) stream.read();
         short blockLen;
         byte[] id, blockData;
         while (stream.available() > 0)

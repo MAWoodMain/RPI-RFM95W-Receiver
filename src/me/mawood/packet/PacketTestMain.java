@@ -8,17 +8,19 @@ public class PacketTestMain
 {
     public static void main(String[] args)
     {
-        byte[] data = hexStringToByteArray(
+        final String hexString =
                 "DA01" +
-                "AA0001" +               // GPS segment preamble (id 0x0001)
+                "AA0001" +                  // GPS segment preamble (id 0x0001)
                 "0608404977AF4ADBC665" +    // DoubleBlock (50.935037)
                 "0608BFF6574927913E81" +    // DoubleBlock (-1.39631) 81
                 "0608403e000000000000" +    // DoubleBlock (30.0)
                 "AA0002" +                  // Battery segment preamble (id 0x0002)
-                "02020120");                // ShortBlock (288)
+                "02020120";                 // ShortBlock (288)
+        System.out.println(hexString);
+        byte[] data = hexStringToByteArray(hexString);
         try
         {
-            System.out.println(Arrays.toString(new PacketStreamReader(PacketStreamReader.bytesToStream(data)).getSegments()));
+            System.out.println(Arrays.toString(new PacketStreamReader(data).getSegments()));
         } catch (PacketException e)
         {
             e.printStackTrace();
