@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class PacketTestMain
 {
-    public static void main(String[] args) throws InvalidBlockException
+    public static void main(String[] args)
     {
         byte[] data = hexStringToByteArray(
                 "AA0001" +
