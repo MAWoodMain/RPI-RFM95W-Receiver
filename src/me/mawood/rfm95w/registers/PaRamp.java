@@ -46,4 +46,9 @@ public enum PaRamp
         for(PaRamp config:set) reg |= config.mask;
         return reg;
     }
+
+    public static byte getAddress()
+    {
+        return 0x0A;
+    }
 }

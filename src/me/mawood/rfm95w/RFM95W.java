@@ -85,9 +85,9 @@ public class RFM95W
         hal.writeRegister(REG_FRF_MID, (byte)(frf >> 8));
         hal.writeRegister(REG_FRF_LSB, (byte)(frf));
 
-        hal.writeRegister(REG_MODEM_CONFIG, ModemConfig1.getRegister(modemConfig1));
-        hal.writeRegister(REG_MODEM_CONFIG2, ModemConfig2.getRegister(modemConfig2));
-        hal.writeRegister(REG_LR_PARAMP,PaRamp.getRegister(paRamp));
+        hal.writeRegister(ModemConfig1.getAddress(), ModemConfig1.getRegister(modemConfig1));
+        hal.writeRegister(ModemConfig2.getAddress(), ModemConfig2.getRegister(modemConfig2));
+        hal.writeRegister(PaRamp.getAddress(),PaRamp.getRegister(paRamp));
         hal.writeRegister(REG_PAYLOAD_LENGTH, PAYLOAD_LENGTH);
 
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word

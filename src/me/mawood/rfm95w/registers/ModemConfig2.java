@@ -38,4 +38,9 @@ public enum ModemConfig2
         for(ModemConfig2 config:set) reg |= config.mask;
         return reg;
     }
+
+    public static byte getAddress()
+    {
+        return 0x1E;
+    }
 }
