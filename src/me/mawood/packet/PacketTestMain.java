@@ -1,6 +1,8 @@
 package me.mawood.packet;
 
+import me.mawood.packet.block.InvalidBlockException;
 import me.mawood.packet.block.blocks.DoubleBlock;
+import me.mawood.packet.segment.InvalidSegmentException;
 
 import java.util.Arrays;
 
@@ -22,6 +24,12 @@ public class PacketTestMain
         {
             System.out.println(Arrays.toString(new PacketStreamReader(data).getSegments()));
         } catch (PacketException e)
+        {
+            e.printStackTrace();
+        } catch (InvalidSegmentException e)
+        {
+            e.printStackTrace();
+        } catch (InvalidBlockException e)
         {
             e.printStackTrace();
         }

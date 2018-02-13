@@ -136,7 +136,8 @@ public class RFM95W
             else{
                 byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
                 byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
-                int rssi = hal.readRegister(REG_LR_PKTRSSIVALUE)-157;
+                int rssi = hal.readRegister(REG_LR_PKTRSSIVALUE);
+                rssi -= 157;
 
                 hal.writeRegister(REG_FIFO_ADDR_PTR, currentAddr);
                 // now loop over the fifo getting the data

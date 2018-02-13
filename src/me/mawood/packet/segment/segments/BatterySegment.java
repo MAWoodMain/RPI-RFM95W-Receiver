@@ -7,7 +7,7 @@ import me.mawood.packet.segment.Segment;
 
 public class BatterySegment extends Segment
 {
-    public static final byte[] TYPE_FLAG = {0x00, 0x02};
+    public static final byte[] TYPE_FLAG = {0x00, 0x01};
     public BatterySegment(Block[] blocks) throws InvalidSegmentException
     {
         super(blocks);

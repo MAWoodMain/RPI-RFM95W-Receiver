@@ -10,6 +10,7 @@ import me.mawood.packet.segment.segments.Segments;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import static me.mawood.Logging.logger;
@@ -20,12 +21,12 @@ public class PacketStreamReader
 
     private ArrayList<Segment> segments;
 
-    public PacketStreamReader(byte[] data) throws PacketException
+    public PacketStreamReader(byte[] data) throws PacketException, InvalidBlockException, InvalidSegmentException
     {
         this(new ByteArrayInputStream(data));
     }
 
-    public PacketStreamReader(ByteArrayInputStream stream) throws PacketException
+    public PacketStreamReader(ByteArrayInputStream stream) throws PacketException, InvalidSegmentException, InvalidBlockException
     {
         byte curr = (byte) stream.read();
         segments = new ArrayList<>();
@@ -45,39 +46,24 @@ public class PacketStreamReader
                 case Segment.SEGMENT_FLAG:
                     id = new byte[Segment.TYPE_FLAG_LENGTH];
                     stream.read(id,0,Segment.TYPE_FLAG_LENGTH);
-                    try
+                    // segment class established
+                    Class segmentClass = Segments.getSegmentClass(id);
+                    // acquire blocks before instantiation
+                    ArrayList<Block> blocks = new ArrayList<>();
+                    curr = (byte) stream.read();
+                    while(curr != Segment.SEGMENT_FLAG && stream.available() > 0)
                     {
-                        // segment class established
-                        Class segmentClass = Segments.getSegmentClass(id);
-                        // acquire blocks before instantiation
-                        ArrayList<Block> blocks = new ArrayList<>();
+                        id = new byte[Block.TYPE_FLAG_LENGTH];
+                        id[0] = curr;
+                        stream.read(id,1,Block.TYPE_FLAG_LENGTH-1);
+                        blockLen = (short) stream.read();
+                        blockData = new byte[blockLen];
+                        stream.read(blockData, 0, blockLen);
+                        blocks.add(interpretBlock(id,blockData));
                         curr = (byte) stream.read();
-                        while(curr != Segment.SEGMENT_FLAG && stream.available() > 0)
-                        {
-                            id = new byte[Block.TYPE_FLAG_LENGTH];
-                            id[0] = curr;
-                            stream.read(id,1,Block.TYPE_FLAG_LENGTH-1);
-                            blockLen = (short) stream.read();
-                            blockData = new byte[blockLen];
-                            stream.read(blockData, 0, blockLen);
-                            blocks.add(interpretBlock(id,blockData));
-                            curr = (byte) stream.read();
-                        }
-                        // blocks created, time to create segment
-                        try
-                        {
-                            segments.add(interpretSegment(segmentClass, blocks.toArray(new Block[blocks.size()])));
-                        } catch (InvalidSegmentException e)
-                        {
-                            logger.log(Level.SEVERE, e.getMessage());
-                            System.exit(-1);
-                        }
-
-                    } catch (InvalidBlockException e)
-                    {
-                        logger.log(Level.SEVERE, e.getMessage());
-                        System.exit(-1);
                     }
+                    // blocks created, time to create segment
+                    segments.add(interpretSegment(segmentClass, blocks.toArray(new Block[blocks.size()])));
                     break;
 
 

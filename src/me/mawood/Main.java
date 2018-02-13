@@ -4,6 +4,8 @@ import static me.mawood.Logging.*;
 
 import me.mawood.packet.PacketException;
 import me.mawood.packet.PacketStreamReader;
+import me.mawood.packet.block.InvalidBlockException;
+import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.rfm95w.RFM95W;
 import me.mawood.rfm95w.registers.ModemConfig1;
 import me.mawood.rfm95w.registers.ModemConfig2;
@@ -25,9 +27,9 @@ public class Main
             {
                 logger.log(Level.INFO, m.toString());
                 logger.log(Level.INFO, Arrays.toString(new PacketStreamReader((m.getMessage())).getSegments()));
-            } catch (PacketException e)
+            } catch (PacketException | InvalidBlockException | InvalidSegmentException e)
             {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "Invalid packet received error: " + e.getMessage());
             }
         });
 

@@ -7,11 +7,11 @@ import me.mawood.packet.segment.Segment;
 
 public class GpsSegment extends Segment
 {
-    public static final byte[] TYPE_FLAG = {0x00, 0x01};
+    public static final byte[] TYPE_FLAG = {0x00, 0x03};
     public GpsSegment(Block[] blocks) throws InvalidSegmentException
     {
         super(blocks);
-        if(blocks.length < 3) throw new InvalidSegmentException("GPS must contain 3 segments");
+        if(blocks.length < 3) throw new InvalidSegmentException("GPS must contain 3 blocks");
         if(!(blocks[0] instanceof DoubleBlock)) throw new InvalidSegmentException("First block of gps segment must be a double");
         if(!(blocks[1] instanceof DoubleBlock)) throw new InvalidSegmentException("Second block of gps segment must be a double");
         if(!(blocks[2] instanceof DoubleBlock)) throw new InvalidSegmentException("Third block of gps segment must be a double");
