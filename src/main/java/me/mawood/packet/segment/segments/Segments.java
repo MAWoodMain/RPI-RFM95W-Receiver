@@ -6,9 +6,10 @@ import java.util.Arrays;
 
 public enum Segments
 {
+    BATTERY_SEGMENT(BatterySegment.TYPE_FLAG, BatterySegment.class),
     GPS_SEGMENT(GpsSegment.TYPE_FLAG, GpsSegment.class),
     IMU_SEGMENT(ImuSegment.TYPE_FLAG, ImuSegment.class),
-    BATTERY_SEGMENT(BatterySegment.TYPE_FLAG, BatterySegment.class);
+    UPTIME_SEGMENT(UptimeSegment.TYPE_FLAG, UptimeSegment.class);
 
     final byte[] segmentId;
     final Class segmentClass;

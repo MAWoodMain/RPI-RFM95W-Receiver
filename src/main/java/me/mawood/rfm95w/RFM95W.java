@@ -31,7 +31,7 @@ public class RFM95W
     }
 
     private static final long FREQUENCY = 868100000; // in Mhz! (868.1)
-    private static final byte PAYLOAD_LENGTH = 64;
+    private static final byte PAYLOAD_LENGTH = (byte) 64;
 
     private EnumSet<ModemConfig1> modemConfig1 = EnumSet.of(ModemConfig1.BW_125KHZ, ModemConfig1.CR_4_5, ModemConfig1.EXPLICIT_HEADER_MODE);
     private EnumSet<ModemConfig2> modemConfig2 = EnumSet.of(ModemConfig2.SF_8, ModemConfig2.TX_NORMAL_MODE, ModemConfig2.RX_PAYLOAD_CRC_ON);
@@ -115,7 +115,7 @@ public class RFM95W
         int irqFlags = hal.readRegister(REG_IRQ_FLAGS); // if any of these are set then the inbound message failed
         if(irqFlags != 0x00)
         {
-            logger.log(Level.FINE, "IRQ: {0}", String.format("0x%02X", irqFlags));
+            logger.log(Level.FINER, "IRQ: {0}", String.format("0x%02X", irqFlags));
         }
 
         // if rxdone flag set
