@@ -6,7 +6,7 @@ public abstract class Block<T>
 
     protected final byte[] data;
 
-    public Block(byte[] data) throws InvalidBlockException
+    public Block(byte[] data)
     {
         this.data = data;
     }

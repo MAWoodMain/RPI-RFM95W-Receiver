@@ -10,7 +10,6 @@ import me.mawood.packet.segment.segments.Segments;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 import static me.mawood.Logging.logger;
@@ -84,8 +83,7 @@ public class PacketStreamReader
         try
         {
             Constructor<?> ctor = segmentClass.getConstructor(Block[].class);
-            Segment segment = (Segment) ctor.newInstance(new Object[] { blocks });
-            return segment;
+            return (Segment) ctor.newInstance(new Object[] { blocks });
         } catch (Exception e)
         {
             throw new InvalidSegmentException("Could not locate constructor or construct the segment, error: " + e.getCause().getMessage());
@@ -98,8 +96,7 @@ public class PacketStreamReader
         {
             Class blockClass = Blocks.getBlockClass(blockId);
             Constructor<?> ctor = blockClass.getConstructor(byte[].class);
-            Block block = (Block)ctor.newInstance(new Object[] { blockData });
-            return block;
+            return (Block)ctor.newInstance(new Object[] { blockData });
         } catch (Exception e)
         {
             throw new InvalidBlockException("Could not locate constructor or construct the block, error: " + e.getMessage());

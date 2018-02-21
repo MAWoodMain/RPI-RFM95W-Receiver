@@ -1,7 +1,6 @@
 package me.mawood.packet.segment.segments;
 
 import me.mawood.packet.block.Block;
-import me.mawood.packet.block.blocks.DoubleBlock;
 import me.mawood.packet.block.blocks.FloatBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;

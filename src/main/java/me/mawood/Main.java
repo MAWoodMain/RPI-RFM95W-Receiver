@@ -5,11 +5,8 @@ import static me.mawood.Logging.*;
 import me.mawood.packet.PacketException;
 import me.mawood.packet.PacketStreamReader;
 import me.mawood.packet.block.InvalidBlockException;
-import me.mawood.packet.block.blocks.ByteBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.rfm95w.RFM95W;
-import me.mawood.rfm95w.registers.ModemConfig1;
-import me.mawood.rfm95w.registers.ModemConfig2;
 import me.mawood.rfm95w.registers.PaRamp;
 
 import java.nio.ByteBuffer;

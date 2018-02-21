@@ -23,13 +23,7 @@ public class PacketTestMain
         try
         {
             System.out.println(Arrays.toString(new PacketStreamReader(data).getSegments()));
-        } catch (PacketException e)
-        {
-            e.printStackTrace();
-        } catch (InvalidSegmentException e)
-        {
-            e.printStackTrace();
-        } catch (InvalidBlockException e)
+        } catch (PacketException | InvalidSegmentException | InvalidBlockException e)
         {
             e.printStackTrace();
         }

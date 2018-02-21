@@ -2,11 +2,8 @@ package me.mawood.packet.segment.segments;
 
 import me.mawood.packet.block.Block;
 import me.mawood.packet.block.blocks.IntBlock;
-import me.mawood.packet.block.blocks.ShortBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
-
-import java.time.Instant;
 
 public class UptimeSegment extends Segment
 {

@@ -20,7 +20,7 @@ public class RFM95W_HAL implements GpioPinListenerDigital
     private final GpioPinDigitalInput dio0;
     private ArrayList<GpioPinListenerDigital> dioListeners = null;
 
-    protected RFM95W_HAL() throws IOException, InterruptedException
+    protected RFM95W_HAL() throws IOException
     {
         entering();
         SpiDevice spi = SpiFactory.getInstance(SpiChannel.CS0,
