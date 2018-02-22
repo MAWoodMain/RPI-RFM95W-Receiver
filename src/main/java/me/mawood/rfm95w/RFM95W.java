@@ -43,7 +43,7 @@ public class RFM95W
     public RFM95W() throws IOException, InterruptedException, InvalidRegisterConfigurationException
     {
         entering();
-        //logger.entering(this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        //logger.entering(this.getClass().getJsonName(), Thread.currentThread().getStackTrace()[1].getMethodName());
         hal = new RFM95W_HAL();
         listeners = new ArrayList<>();
         setup();
@@ -135,7 +135,7 @@ public class RFM95W
             }
             else{
                 byte currentAddr = hal.readRegister(REG_FIFO_RX_CURRENT_ADDR);
-                byte receivedCount = hal.readRegister(REG_RX_NB_BYTES);
+                int receivedCount = hal.readRegister(REG_RX_NB_BYTES) & 0xff;
                 int rssi = hal.readRegister(REG_LR_PKTRSSIVALUE);
                 rssi -= 157;
 

@@ -4,6 +4,7 @@ import me.mawood.packet.block.Block;
 import me.mawood.packet.block.blocks.DoubleBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
+import org.json.simple.JSONObject;
 
 public class GpsSegment extends Segment
 {
@@ -30,6 +31,22 @@ public class GpsSegment extends Segment
     public double getAltitude()
     {
         return ((DoubleBlock)blocks[2]).getData();
+    }
+
+    @Override
+    public JSONObject toJson()
+    {
+        JSONObject json = new JSONObject();
+        json.put("lat", getLatitude());
+        json.put("long", getLongitude());
+        json.put("alt", getAltitude());
+        return json;
+    }
+
+    @Override
+    public String getJsonName()
+    {
+        return "GPS";
     }
 
     @Override

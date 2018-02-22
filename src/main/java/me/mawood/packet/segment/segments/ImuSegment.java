@@ -4,6 +4,7 @@ import me.mawood.packet.block.Block;
 import me.mawood.packet.block.blocks.FloatBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
+import org.json.simple.JSONObject;
 
 public class ImuSegment extends Segment
 {
@@ -31,6 +32,22 @@ public class ImuSegment extends Segment
     public double getZ()
     {
         return ((FloatBlock)blocks[2]).getData();
+    }
+
+    @Override
+    public JSONObject toJson()
+    {
+        JSONObject json = new JSONObject();
+        json.put("x", getX());
+        json.put("y", getY());
+        json.put("z", getZ());
+        return json;
+    }
+
+    @Override
+    public String getJsonName()
+    {
+        return "IMU";
     }
 
     @Override

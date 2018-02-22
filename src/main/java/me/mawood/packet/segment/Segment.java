@@ -1,6 +1,7 @@
 package me.mawood.packet.segment;
 
 import me.mawood.packet.block.Block;
+import org.json.simple.JSONObject;
 
 import java.util.Arrays;
 
@@ -20,4 +21,8 @@ public abstract class Segment
     {
         return 1 + TYPE_FLAG_LENGTH + Arrays.stream(blocks).mapToInt(Block::getLength).sum();
     }
+
+    public abstract JSONObject toJson();
+
+    public abstract String getJsonName();
 }

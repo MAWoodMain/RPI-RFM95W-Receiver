@@ -3,13 +3,36 @@ package me.mawood.packet;
 import me.mawood.packet.block.InvalidBlockException;
 import me.mawood.packet.block.blocks.DoubleBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 public class PacketTestMain
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws MqttException, UnsupportedEncodingException
     {
+        if(args.length < 2)
+        {
+            System.err.println("Requires username and adafruit io key to run");
+        }
+        String username = args[0];
+        String key = args[1];
+
+        MqttClient client = new MqttClient(
+                "tcp://io.adafruit.com:1883", //URI
+                MqttClient.generateClientId(), //ClientId
+                new MemoryPersistence()); //Persistence
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName(username);
+        options.setPassword(key.toCharArray());
+        client.connect(options);
+        client.publish(username + "/f/unicorn", "{\"value\":{\"imu\":{\"x\":0.2,\"y\":0.6,\"z\":1.2},\"gps\":{\"lat\":121.6,\"long\":0.21,\"alt\":100.6}}}".getBytes("UTF-8"),2,false);
+        client.disconnect();
+
         final String hexString =
                 "DA01" +
                 "AA0001" +                  // GPS segment preamble (id 0x0001)

@@ -4,6 +4,7 @@ import me.mawood.packet.block.Block;
 import me.mawood.packet.block.blocks.IntBlock;
 import me.mawood.packet.segment.InvalidSegmentException;
 import me.mawood.packet.segment.Segment;
+import org.json.simple.JSONObject;
 
 public class UptimeSegment extends Segment
 {
@@ -18,6 +19,20 @@ public class UptimeSegment extends Segment
     public int getUptime()
     {
         return ((IntBlock) blocks[0]).getData(); //Instant.ofEpochMilli(((IntBlock) blocks[0]).getData());
+    }
+
+    @Override
+    public JSONObject toJson()
+    {
+        JSONObject json = new JSONObject();
+        json.put("uptime", getUptime());
+        return json;
+    }
+
+    @Override
+    public String getJsonName()
+    {
+        return "Uptime";
     }
 
     @Override
