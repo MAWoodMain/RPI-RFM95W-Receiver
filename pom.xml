@@ -50,17 +50,5 @@
             <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <name>artifactory.mawood.me-releases</name>
-            <url>http://ec2-34-245-153-156.eu-west-1.compute.amazonaws.com:8081/artifactory/libs-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>artifactory.mawood.me-snapshots</name>
-            <url>http://ec2-34-245-153-156.eu-west-1.compute.amazonaws.com:8081/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>
