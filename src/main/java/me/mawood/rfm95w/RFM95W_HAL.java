@@ -102,4 +102,9 @@ public class RFM95W_HAL implements GpioPinListenerDigital
         dioListeners.forEach(e -> e.handleGpioPinDigitalStateChangeEvent(event));
         exiting();
     }
+
+    public SpiDevice getSpi()
+    {
+        return spi;
+    }
 }

@@ -1,5 +1,6 @@
 package me.mawood.rfm95w;
 
+import me.mawood.registers.Register;
 import me.mawood.rfm95w.registers.InvalidRegisterConfigurationException;
 import me.mawood.rfm95w.registers.ModemConfig1;
 import me.mawood.rfm95w.registers.ModemConfig2;
@@ -33,9 +34,9 @@ public class RFM95W
     private static final long FREQUENCY = 868100000; // in Mhz! (868.1)
     private static final byte PAYLOAD_LENGTH = (byte) 64;
 
-    private final EnumSet<ModemConfig1> modemConfig1 = EnumSet.of(ModemConfig1.BW_125KHZ, ModemConfig1.CR_4_5, ModemConfig1.EXPLICIT_HEADER_MODE);
-    private final EnumSet<ModemConfig2> modemConfig2 = EnumSet.of(ModemConfig2.SF_8, ModemConfig2.TX_NORMAL_MODE, ModemConfig2.RX_PAYLOAD_CRC_ON);
-    private final EnumSet<PaRamp> paRamp = EnumSet.of(PaRamp.PR_50US, PaRamp.MS_NO_SHAPING);
+    private final Register modemConfig1;
+    private final Register modemConfig2;
+    private final Register paRamp;
 
     private final RFM95W_HAL hal;
     private final ArrayList<MessageReceivedListener> listeners;
@@ -46,6 +47,12 @@ public class RFM95W
         //logger.entering(this.getClass().getJsonName(), Thread.currentThread().getStackTrace()[1].getMethodName());
         hal = new RFM95W_HAL();
         listeners = new ArrayList<>();
+
+        modemConfig1 = new ModemConfig1(hal.getSpi());
+        modemConfig2 = new ModemConfig2(hal.getSpi());
+        paRamp = new PaRamp(hal.getSpi());
+
+
         setup();
         // debug print on message
         hal.registerInterestInDio0(event -> {
@@ -85,9 +92,24 @@ public class RFM95W
         hal.writeRegister(REG_FRF_MID, (byte)(frf >> 8));
         hal.writeRegister(REG_FRF_LSB, (byte)(frf));
 
-        hal.writeRegister(ModemConfig1.getAddress(), ModemConfig1.getRegister(modemConfig1));
-        hal.writeRegister(ModemConfig2.getAddress(), ModemConfig2.getRegister(modemConfig2));
-        hal.writeRegister(PaRamp.getAddress(),PaRamp.getRegister(paRamp));
+        modemConfig1.setMasks(Register.enumSetToSet(EnumSet.of(
+                ModemConfig1.ModemConfig1Masks.BW_125KHZ,
+                ModemConfig1.ModemConfig1Masks.CR_4_5,
+                ModemConfig1.ModemConfig1Masks.EXPLICIT_HEADER_MODE)));
+        modemConfig1.writeRegister();
+
+        modemConfig2.setMasks(Register.enumSetToSet(EnumSet.of(
+                ModemConfig2.ModemConfig2Masks.SF_8,
+                ModemConfig2.ModemConfig2Masks.TX_NORMAL_MODE,
+                ModemConfig2.ModemConfig2Masks.RX_PAYLOAD_CRC_ON)));
+        modemConfig2.writeRegister();
+
+        paRamp.setMasks(Register.enumSetToSet(EnumSet.of(
+                PaRamp.PaRampMask.PR_50US,
+                PaRamp.PaRampMask.MS_NO_SHAPING
+        )));
+        paRamp.writeRegister();
+
         hal.writeRegister(REG_PAYLOAD_LENGTH, PAYLOAD_LENGTH);
 
         hal.writeRegister(REG_SYNC_WORD, (byte)0x34); // LoRaWAN public sync word

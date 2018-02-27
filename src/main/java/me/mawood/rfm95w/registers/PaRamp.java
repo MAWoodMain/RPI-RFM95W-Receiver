@@ -1,54 +1,56 @@
 package me.mawood.rfm95w.registers;
 
+import com.pi4j.io.spi.SpiDevice;
+import me.mawood.registers.BitMask;
+import me.mawood.registers.Register;
+import me.mawood.registers.interfaces.SPIRegisterInterface;
+
 import java.util.EnumSet;
 
-public enum PaRamp
+public class PaRamp extends Register
 {
-    PR_3_4MS(0x00,0x01),
-    PR_2MS(0x01,0x01),
-    PR_1MS(0x02,0x01),
-    PR_500US(0x03,0x01),
-    PR_250US(0x04,0x01),
-    PR_125US(0x05,0x01),
-    PR_100US(0x06,0x01),
-    PR_62US(0x07,0x01),
-    PR_50US(0x08,0x01),
-    PR_40US(0x09,0x01),
-    PR_31US(0x0A,0x01),
-    PR_25US(0x0B,0x01),
-    PR_20US(0x0C,0x01),
-    PR_15US(0x0D,0x01),
-    PR_12US(0x0E,0x01),
-    PR_10US(0x0F,0x01),
-
-    MS_NO_SHAPING(0x00 << 5, 0x02),
-    MS_GF_1_OR_CUTOFF_BR(0x01 << 5, 0x02),
-    MS_GF_0_5_OR_CUTOFF_2BR(0x02 << 5, 0x02),
-    MS_GF_0_3(0x03 << 5, 0x02);
-
-    final byte mask;
-    final byte set;
-    PaRamp(int mask, int set)
+    public enum PaRampMask implements BitMask
     {
-        this.mask = (byte) mask;
-        this.set  = (byte) set;
+        PR_3_4MS(0x00),
+        PR_2MS(0x01),
+        PR_1MS(0x02),
+        PR_500US(0x03),
+        PR_250US(0x04),
+        PR_125US(0x05),
+        PR_100US(0x06),
+        PR_62US(0x07),
+        PR_50US(0x08),
+        PR_40US(0x09),
+        PR_31US(0x0A),
+        PR_25US(0x0B),
+        PR_20US(0x0C),
+        PR_15US(0x0D),
+        PR_12US(0x0E),
+        PR_10US(0x0F),
+
+        MS_NO_SHAPING(0x00 << 5),
+        MS_GF_1_OR_CUTOFF_BR(0x01 << 5),
+        MS_GF_0_5_OR_CUTOFF_2BR(0x02 << 5),
+        MS_GF_0_3(0x03 << 5);
+
+        final byte mask;
+        PaRampMask(int mask)
+        {
+            this.mask = (byte) mask;
+        }
+
+        public byte getMask()
+        {
+            return mask;
+        }
     }
 
-    public static boolean isValidSet(EnumSet<PaRamp> set)
+    public PaRamp (SpiDevice device)
     {
-        return set.size() == set.stream().mapToInt(r ->r.set).distinct().count();
-    }
-
-    public static byte getRegister(EnumSet<PaRamp> set) throws InvalidRegisterConfigurationException
-    {
-        if(!isValidSet(set)) throw new InvalidRegisterConfigurationException("Incompatible register combination");
-        byte reg = 0x00;
-        for(PaRamp config:set) reg |= config.mask;
-        return reg;
-    }
-
-    public static byte getAddress()
-    {
-        return 0x0A;
+        super(new SPIRegisterInterface(device), (byte) 0x0A,
+                Register.enumSetToSet(EnumSet.of(
+                        ModemConfig2.ModemConfig2Masks.SF_8,
+                        ModemConfig2.ModemConfig2Masks.TX_NORMAL_MODE,
+                        ModemConfig2.ModemConfig2Masks.RX_PAYLOAD_CRC_ON)));
     }
 }
