@@ -44,20 +44,31 @@ public class Main
         options.setUserName(username);
         options.setPassword(key.toCharArray());
 
-
+        client = new MqttClient(
+                "tcp://io.adafruit.com:1883", //URI
+                MqttClient.generateClientId(), //ClientId
+                new MemoryPersistence()); //Persistence
+        client.connect(options);
+        while(!client.isConnected())
+        {
+            Logging.logger.log(Level.INFO, "Waiting for MQTT to connect");
+            Thread.sleep(1000);
+        }
         RFM95W rfm95w = new RFM95W();
         rfm95w.registerInterestInMessages(m -> {
             try
             {
                 Logging.logger.log(Level.FINE, m.toString());
                 Logging.logger.log(Level.INFO, Arrays.toString(Arrays.stream(new PacketStreamReader((m.getMessage())).getSegments()).map(s -> s.toJson().toJSONString()).toArray()));
-                client = new MqttClient(
-                        "tcp://io.adafruit.com:1883", //URI
-                        MqttClient.generateClientId(), //ClientId
-                        new MemoryPersistence()); //Persistence
-                client.connect(options);
-                client.publish(username + "/f/unicorn", new MqttPacketBuilder(new PacketStreamReader(m.getMessage()).getSegments()).getMessage());
-                client.disconnect();
+
+                if(client.isConnected())
+                {
+                    client.publish(username + "/f/unicorn", new MqttPacketBuilder(new PacketStreamReader(m.getMessage()).getSegments()).getMessage());
+                } else
+                {
+                    Logging.logger.log(Level.WARNING, "Failed to publish packet, MQTT not connected");
+                }
+
 
             } catch (PacketException | InvalidBlockException | InvalidSegmentException e)
             {
@@ -70,9 +81,10 @@ public class Main
                 }
             } catch (MqttException e)
             {
-                e.printStackTrace();
+                Logging.logger.log(Level.WARNING, "Failed to publish packet, MQTT error " + e.getMessage());
             }
         });
+        client.disconnect();
 
         try
         {
