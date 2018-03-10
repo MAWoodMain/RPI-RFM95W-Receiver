@@ -67,7 +67,7 @@ public class PacketStreamReader
 
 
                 default:
-                    logger.log(Level.FINER, "Unknown packet flag {0}", String.format("0x%02X", curr));
+                    logger.log(Level.FINER, "Unknown LoRaPacket flag {0}", String.format("0x%02X", curr));
                     if (stream.available() > 0) curr = (byte) stream.read();
             }
         }

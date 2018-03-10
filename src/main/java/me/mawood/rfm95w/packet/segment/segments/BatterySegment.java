@@ -1,10 +1,10 @@
 package me.mawood.rfm95w.packet.segment.segments;
 
+import com.google.gson.JsonObject;
 import me.mawood.rfm95w.packet.block.Block;
 import me.mawood.rfm95w.packet.block.blocks.ShortBlock;
 import me.mawood.rfm95w.packet.segment.InvalidSegmentException;
 import me.mawood.rfm95w.packet.segment.Segment;
-import org.json.simple.JSONObject;
 
 public class BatterySegment extends Segment
 {
@@ -17,10 +17,10 @@ public class BatterySegment extends Segment
     }
 
     @Override
-    public JSONObject toJson()
+    public JsonObject toJson()
     {
-        JSONObject json = new JSONObject();
-        json.put("batteryLevel", getBatteryLevel());
+        JsonObject json = new JsonObject();
+        json.addProperty("batteryLevel", getBatteryLevel());
         return json;
     }
 

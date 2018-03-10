@@ -1,10 +1,10 @@
 package me.mawood.rfm95w.packet.segment.segments;
 
+import com.google.gson.JsonObject;
 import me.mawood.rfm95w.packet.block.blocks.DoubleBlock;
 import me.mawood.rfm95w.packet.segment.InvalidSegmentException;
 import me.mawood.rfm95w.packet.block.Block;
 import me.mawood.rfm95w.packet.segment.Segment;
-import org.json.simple.JSONObject;
 
 public class GpsSegment extends Segment
 {
@@ -34,12 +34,12 @@ public class GpsSegment extends Segment
     }
 
     @Override
-    public JSONObject toJson()
+    public JsonObject toJson()
     {
-        JSONObject json = new JSONObject();
-        json.put("lat", getLatitude());
-        json.put("long", getLongitude());
-        json.put("alt", getAltitude());
+        JsonObject json = new JsonObject();
+        json.addProperty("lat", getLatitude());
+        json.addProperty("long", getLongitude());
+        json.addProperty("alt", getAltitude());
         return json;
     }
 
