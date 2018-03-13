@@ -3,10 +3,10 @@
 
     <persistence-unit name="Packet">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>me.mawood.persistence.loRaPacket.DataRate</class>
-        <class>me.mawood.persistence.loRaPacket.TxInfo</class>
-        <class>me.mawood.persistence.loRaPacket.RxInfo</class>
-        <class>me.mawood.persistence.loRaPacket.LoRaPacket</class>
+        <class>me.mawood.loraCapture.persistence.loRaPacket.DataRate</class>
+        <class>me.mawood.loraCapture.persistence.loRaPacket.TxInfo</class>
+        <class>me.mawood.loraCapture.persistence.loRaPacket.RxInfo</class>
+        <class>me.mawood.loraCapture.persistence.loRaPacket.LoRaPacket</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://silent-fox:3306/data"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
