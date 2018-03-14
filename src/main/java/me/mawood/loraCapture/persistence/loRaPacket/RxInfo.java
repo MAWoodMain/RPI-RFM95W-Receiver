@@ -18,14 +18,14 @@ public class RxInfo implements Comparable<RxInfo>, Persistable
     private String mac;
     private String time;
     private int rssi;
-    private int loRaSNR;
+    private float loRaSNR;
     private String name;
     private double latitude;
     private double longitude;
     private int altitude;
     private Set<LoRaPacket> packets = new HashSet<>(0);
 
-    public RxInfo(String mac, String time, int rssi, int loRaSNR, String name, double latitude, double longitude, int altitude)
+    public RxInfo(String mac, String time, int rssi, float loRaSNR, String name, double latitude, double longitude, int altitude)
     {
         this.mac = mac;
         this.time = time;
@@ -93,12 +93,12 @@ public class RxInfo implements Comparable<RxInfo>, Persistable
 
     @Basic
     @Column(name = "loraSnr")
-    public int getLoRaSNR()
+    public float getLoRaSNR()
     {
         return loRaSNR;
     }
 
-    public void setLoRaSNR(int loRaSNR)
+    public void setLoRaSNR(float loRaSNR)
     {
         this.loRaSNR = loRaSNR;
     }
