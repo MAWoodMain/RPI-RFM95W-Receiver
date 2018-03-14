@@ -76,4 +76,14 @@ public class DecodedPacket implements Persistable
     {
 
     }
+
+    @Override
+    public String toString()
+    {
+        return "DecodedPacket{" +
+                "packetId=" + packetId +
+                ", origin=" + origin +
+                ", segments=" + segments +
+                '}';
+    }
 }
