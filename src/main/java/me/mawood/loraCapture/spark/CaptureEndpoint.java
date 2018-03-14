@@ -1,6 +1,7 @@
 package me.mawood.loraCapture.spark;
 
 import static me.mawood.loraCapture.spark.JsonUtil.json;
+import static spark.Spark.port;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ public class CaptureEndpoint
     public CaptureEndpoint(PersistenceManager pm)
     {
         this.pm = pm;
+        port(20054);
         listeners = new ArrayList<>();
         post("/", (request, response) -> {
             Gson gson = new Gson();
