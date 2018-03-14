@@ -24,13 +24,10 @@ public class Main
         endpoint.registerInterest(p -> {
             try
             {
-                System.out.println("Listener");
-                System.out.println(p);
                 DecodedPacket decodedPacket = new DecodedPacket(p);
                 System.out.println(decodedPacket);
-                //BatterySegment s = decodedPacket.getSegments().toArray(new BatterySegment[1])[0];
-                System.out.println(decodedPacket);
                 pm.store(decodedPacket);
+                System.out.println("Stored");
             } catch (InvalidSegmentException | PacketException | InvalidBlockException e)
             {
                 e.printStackTrace();

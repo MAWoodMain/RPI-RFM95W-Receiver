@@ -25,7 +25,6 @@ public class CaptureEndpoint
             LoRaPacket p = gson.fromJson(request.body(), LoRaPacket.class);
 
             pm.store(p);
-            System.out.println(p);
             alertListeners(p);
             response.type("application/json");
             return "";
