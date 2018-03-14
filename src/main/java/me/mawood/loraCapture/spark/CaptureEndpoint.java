@@ -24,6 +24,7 @@ public class CaptureEndpoint
         listeners = new ArrayList<>();
         post("/", (request, response) -> {
             Gson gson = new Gson();
+            System.out.println(request.body());
             LoRaPacket p = gson.fromJson(request.body(), LoRaPacket.class);
 
             pm.store(p);
