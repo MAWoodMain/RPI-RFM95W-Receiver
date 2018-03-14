@@ -9,6 +9,7 @@
         <class>me.mawood.loraCapture.persistence.loRaPacket.LoRaPacket</class>
         <class>me.mawood.loraCapture.packet.segment.Segment</class>
         <class>me.mawood.loraCapture.packet.segment.segments.BatterySegment</class>
+        <class>me.mawood.loraCapture.packet.segment.segments.UptimeSegment</class>
         <class>me.mawood.loraCapture.packet.DecodedPacket</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://silent-fox:3306/data"/>
