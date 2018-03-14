@@ -19,6 +19,8 @@
         <mapping class="me.mawood.loraCapture.packet.DecodedPacket" />
         <mapping class="me.mawood.loraCapture.packet.segment.segments.BatterySegment" />
         <mapping class="me.mawood.loraCapture.packet.segment.segments.UptimeSegment" />
+        <mapping class="me.mawood.loraCapture.packet.segment.segments.ImuSegment" />
+        <mapping class="me.mawood.loraCapture.packet.segment.segments.GpsSegment" />
         <mapping class="me.mawood.loraCapture.packet.segment.Segment" />
 
     </session-factory>
