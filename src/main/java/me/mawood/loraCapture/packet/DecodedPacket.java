@@ -3,15 +3,15 @@ package me.mawood.loraCapture.packet;
 import me.mawood.loraCapture.packet.block.InvalidBlockException;
 import me.mawood.loraCapture.packet.segment.InvalidSegmentException;
 import me.mawood.loraCapture.packet.segment.Segment;
+import me.mawood.loraCapture.packet.segment.segments.BatterySegment;
+import me.mawood.loraCapture.packet.segment.segments.UptimeSegment;
 import me.mawood.loraCapture.persistence.Persistable;
 import me.mawood.loraCapture.persistence.loRaPacket.LoRaPacket;
 import me.mawood.loraCapture.persistence.loRaPacket.RxInfo;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "decoded_packet")
@@ -31,7 +31,7 @@ public class DecodedPacket implements Persistable
         this.origin = loraPacket;
         PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode(loraPacket.getData().getBytes()));
         this.segments = new HashSet<>();
-        this.segments.addAll(Arrays.asList(psr.getSegments()));
+        this.segments.addAll(Arrays.asList(psr.getSegments()).stream().filter(s -> (s instanceof UptimeSegment || s instanceof BatterySegment)).collect(Collectors.toList()));
         this.segments.forEach(s -> s.setPacket(this));
     }
 
