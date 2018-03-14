@@ -25,6 +25,8 @@ public class CaptureEndpoint
 
             PersistenceManager pm = new PersistenceManager();
             pm.store(p);
+            System.out.println(p);
+            pm.exit();
             alertListeners(p);
             response.type("application/json");
             return "";

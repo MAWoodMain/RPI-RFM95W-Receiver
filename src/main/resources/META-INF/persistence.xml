@@ -7,6 +7,9 @@
         <class>me.mawood.loraCapture.persistence.loRaPacket.TxInfo</class>
         <class>me.mawood.loraCapture.persistence.loRaPacket.RxInfo</class>
         <class>me.mawood.loraCapture.persistence.loRaPacket.LoRaPacket</class>
+        <class>me.mawood.loraCapture.packet.segment.Segment</class>
+        <class>me.mawood.loraCapture.packet.segment.segments.BatterySegment</class>
+        <class>me.mawood.loraCapture.packet.DecodedPacket</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://silent-fox:3306/data"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>

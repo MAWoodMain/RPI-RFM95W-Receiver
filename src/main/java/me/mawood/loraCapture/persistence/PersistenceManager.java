@@ -44,7 +44,7 @@ public class PersistenceManager
         session.close();
     }
 
-    protected void exit() {
+    public void exit() {
         sessionFactory.close();
     }
 
