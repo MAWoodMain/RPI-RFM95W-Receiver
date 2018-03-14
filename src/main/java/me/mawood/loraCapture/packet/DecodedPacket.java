@@ -32,6 +32,7 @@ public class DecodedPacket implements Persistable
         PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode(loraPacket.getData().getBytes()));
         this.segments = new HashSet<>();
         this.segments.addAll(Arrays.asList(psr.getSegments()));
+        this.segments.forEach(s -> s.setPacket(this));
     }
 
     @Id
@@ -47,7 +48,7 @@ public class DecodedPacket implements Persistable
         this.packetId = packetId;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="origin", nullable=false)
     public LoRaPacket getOrigin()
     {
@@ -60,7 +61,7 @@ public class DecodedPacket implements Persistable
     }
 
 
-    @OneToMany(mappedBy="packet")
+    @OneToMany(mappedBy="packet", cascade = CascadeType.ALL)
     public Set<Segment> getSegments()
     {
         return segments;

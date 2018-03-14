@@ -14,19 +14,18 @@ import java.util.Arrays;
 public class CaptureEndpoint
 {
     private final ArrayList<PacketListener> listeners;
+    private final PersistenceManager pm;
 
-
-    public CaptureEndpoint()
+    public CaptureEndpoint(PersistenceManager pm)
     {
+        this.pm = pm;
         listeners = new ArrayList<>();
         post("/", (request, response) -> {
             Gson gson = new Gson();
             LoRaPacket p = gson.fromJson(request.body(), LoRaPacket.class);
 
-            PersistenceManager pm = new PersistenceManager();
             pm.store(p);
             System.out.println(p);
-            pm.exit();
             alertListeners(p);
             response.type("application/json");
             return "";

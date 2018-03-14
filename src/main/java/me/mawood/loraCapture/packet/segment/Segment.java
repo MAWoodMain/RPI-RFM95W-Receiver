@@ -3,6 +3,7 @@ package me.mawood.loraCapture.packet.segment;
 import com.google.gson.JsonObject;
 import me.mawood.loraCapture.packet.DecodedPacket;
 import me.mawood.loraCapture.packet.block.Block;
+import me.mawood.loraCapture.persistence.Persistable;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name = "segment")
-public abstract class Segment
+public class Segment implements Persistable
 {
     @Transient
     public static final byte SEGMENT_FLAG = (byte) 0xAA;
@@ -33,7 +34,7 @@ public abstract class Segment
 
 
     @Id
-    @Column(name = "segmentId")
+    @Column(name = "id")
     @GeneratedValue
     public int getId()
     {
@@ -52,14 +53,20 @@ public abstract class Segment
     }
 
     @Transient
-    public abstract JsonObject toJson();
+    public JsonObject toJson()
+    {
+        return new JsonObject();
+    }
 
     @Transient
-    public abstract String getJsonName();
+    public String getJsonName()
+    {
+        return "Segment";
+    }
 
     protected int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="packetId", nullable=false)
     public DecodedPacket getPacket()
     {
@@ -69,5 +76,11 @@ public abstract class Segment
     public void setPacket(DecodedPacket packet)
     {
         this.packet = packet;
+    }
+
+    @Override
+    public void prepare()
+    {
+
     }
 }
