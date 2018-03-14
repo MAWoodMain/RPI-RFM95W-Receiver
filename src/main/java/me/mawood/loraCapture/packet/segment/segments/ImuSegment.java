@@ -6,6 +6,10 @@ import me.mawood.loraCapture.packet.block.blocks.FloatBlock;
 import me.mawood.loraCapture.packet.segment.InvalidSegmentException;
 import me.mawood.loraCapture.packet.segment.Segment;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "imu_segments")
 public class ImuSegment extends Segment
 {
     public static final byte[] TYPE_FLAG = {0x00, 0x02};
@@ -19,21 +23,46 @@ public class ImuSegment extends Segment
         if(!(blocks[2] instanceof FloatBlock)) throw new InvalidSegmentException("Third block of imu segment must be a float");
     }
 
-    public double getX()
+    public ImuSegment() {
+    }
+
+    @Basic
+    @Column(name="x")
+    public float getX()
     {
         return ((FloatBlock)blocks[0]).getData();
     }
 
-    public double getY()
+    public void setX(float x)
+    {
+        //TODO implement setting block
+    }
+
+    @Basic
+    @Column(name="y")
+    public float getY()
     {
         return ((FloatBlock)blocks[1]).getData();
     }
 
-    public double getZ()
+    public void setY(float y)
+    {
+        //TODO implement setting block
+    }
+
+    @Basic
+    @Column(name="z")
+    public float getZ()
     {
         return ((FloatBlock)blocks[2]).getData();
     }
 
+    public void setZ(float z)
+    {
+        //TODO implement setting block
+    }
+
+    @Transient
     @Override
     public JsonObject toJson()
     {
@@ -44,12 +73,14 @@ public class ImuSegment extends Segment
         return json;
     }
 
+    @Transient
     @Override
     public String getJsonName()
     {
         return "IMU";
     }
 
+    @Transient
     @Override
     public String toString()
     {

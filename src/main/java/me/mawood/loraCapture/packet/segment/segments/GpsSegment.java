@@ -6,6 +6,10 @@ import me.mawood.loraCapture.packet.segment.InvalidSegmentException;
 import me.mawood.loraCapture.packet.block.Block;
 import me.mawood.loraCapture.packet.segment.Segment;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "gps_segments")
 public class GpsSegment extends Segment
 {
     public static final byte[] TYPE_FLAG = {0x00, 0x03};
@@ -18,21 +22,46 @@ public class GpsSegment extends Segment
         if(!(blocks[2] instanceof DoubleBlock)) throw new InvalidSegmentException("Third block of gps segment must be a double");
     }
 
+    public GpsSegment() {
+    }
+
+    @Basic
+    @Column(name="latitude")
     public double getLatitude()
     {
         return ((DoubleBlock)blocks[0]).getData();
     }
 
+    public void setLatitude(double val)
+    {
+        //TODO implement setting block
+    }
+
+    @Basic
+    @Column(name="longitude")
     public double getLongitude()
     {
         return ((DoubleBlock)blocks[1]).getData();
     }
 
+    public void setLongitude(double val)
+    {
+        //TODO implement setting block
+    }
+
+    @Basic
+    @Column(name="altitude")
     public double getAltitude()
     {
         return ((DoubleBlock)blocks[2]).getData();
     }
 
+    public void setAltitude(double val)
+    {
+        //TODO implement setting block
+    }
+
+    @Transient
     @Override
     public JsonObject toJson()
     {
@@ -43,12 +72,14 @@ public class GpsSegment extends Segment
         return json;
     }
 
+    @Transient
     @Override
     public String getJsonName()
     {
         return "GPS";
     }
 
+    @Transient
     @Override
     public String toString()
     {

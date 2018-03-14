@@ -31,7 +31,7 @@ public class DecodedPacket implements Persistable
         this.origin = loraPacket;
         PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode(loraPacket.getData().getBytes()));
         this.segments = new HashSet<>();
-        this.segments.addAll(Arrays.asList(psr.getSegments()).stream().filter(s -> (s instanceof UptimeSegment || s instanceof BatterySegment)).collect(Collectors.toList()));
+        this.segments.addAll(Arrays.asList(psr.getSegments()));
         this.segments.forEach(s -> s.setPacket(this));
     }
 
