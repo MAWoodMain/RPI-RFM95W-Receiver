@@ -22,15 +22,18 @@ public class Main
         CaptureEndpoint endpoint = new CaptureEndpoint(pm);
         endpoint.registerInterest(System.out::println);
         endpoint.registerInterest(p -> {
-            try
+            if(p.getApplicationName().equals("RobTheUnicorn"))
             {
-                DecodedPacket decodedPacket = new DecodedPacket(p);
-                System.out.println(decodedPacket);
-                pm.store(decodedPacket);
-                System.out.println("Stored");
-            } catch (InvalidSegmentException | PacketException | InvalidBlockException e)
-            {
-                e.printStackTrace();
+                try
+                {
+                    DecodedPacket decodedPacket = new DecodedPacket(p);
+                    System.out.println(decodedPacket);
+                    pm.store(decodedPacket);
+                    System.out.println("Stored");
+                } catch (InvalidSegmentException | PacketException | InvalidBlockException e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
     }
