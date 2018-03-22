@@ -53,14 +53,14 @@ public class Main
                     float temperature = rs.getTemperature();
                     short[] readings = rs.getRainMeasurements();
 
-                    int count = readings.length;
                     final int interval = 120;
 
+                    int count = 0;
                     Set<RainMeasurement> measurements = new HashSet<>();
                     for(short reading:readings)
                     {
-                        count--;
                         measurements.add(new RainMeasurement(reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
+                        count++;
                     }
                     System.out.println(measurements);
                 } catch (Exception e)
