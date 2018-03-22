@@ -1,9 +1,16 @@
 package me.mawood.loraCapture.persistence;
 
+import javax.persistence.*;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-public class RainMeasurement
+@Entity
+@Table(name = "rain")
+public class RainMeasurement implements Persistable
 {
+    private int rainId;
+
     private short measurement;
     private Instant timestamp;
     private float temperature;
@@ -19,20 +26,61 @@ public class RainMeasurement
     public RainMeasurement() {
     }
 
+
+    @Id
+    @Column(name = "rainId")
+    @GeneratedValue
+    public int getRainId()
+    {
+        return rainId;
+    }
+
+    public void setRainId(int rainId) {
+        this.rainId = rainId;
+    }
+
+    @Basic
+    @Column(name = "measurement")
     public short getMeasurement() {
         return measurement;
     }
 
+    public void getMeasurement(short measurement) {
+        this.measurement = measurement;
+    }
+
+    @Transient
     public Instant getTimestamp() {
         return timestamp;
     }
 
+    @Basic
+    @Column(name = "timestamp", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    public ZonedDateTime getDateTime()
+    {
+        return timestamp.atZone(ZoneId.systemDefault());
+    }
+    public void setDateTime(ZonedDateTime dt)
+    {
+    }
+
+    @Basic
+    @Column(name = "temperature")
     public float getTemperature() {
         return temperature;
     }
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
+    }
 
+    @Basic
+    @Column(name = "batteryLevel")
     public short getBatteryLevel() {
         return batteryLevel;
+    }
+    public void getBatteryLevel(short batteryLevel) {
+        this.batteryLevel = batteryLevel;
     }
 
     @Override
@@ -43,5 +91,10 @@ public class RainMeasurement
                 ", temperature=" + temperature +
                 ", batteryLevel=" + batteryLevel +
                 '}';
+    }
+
+    @Override
+    public void prepare() {
+
     }
 }

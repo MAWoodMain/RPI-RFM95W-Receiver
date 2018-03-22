@@ -42,7 +42,7 @@ public class Main
                     e.printStackTrace();
                 }
             }
-            else //if(p.getApplicationName().equals("RobTheUnicorn"))
+            else if(p.getApplicationName().equals("Rain-Gauge"))
             {
                 try
                 {
@@ -63,12 +63,18 @@ public class Main
                         measurements.add(new RainMeasurement(reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
                         count++;
                     }
-                    measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(System.out::println);
-                    System.out.println(measurements);
+                    measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(m ->
+                    {
+                        System.out.println(m);
+                        pm.store(m);
+                    });
                 } catch (Exception e)
                 {
                     e.printStackTrace();
                 }
+            } else
+            {
+                System.out.println("Unknown protocol '" + p.getApplicationName() + "'");
             }
         });
     }
