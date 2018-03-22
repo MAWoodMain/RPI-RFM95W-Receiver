@@ -22,6 +22,7 @@
         <mapping class="me.mawood.loraCapture.packet.segment.segments.ImuSegment" />
         <mapping class="me.mawood.loraCapture.packet.segment.segments.GpsSegment" />
         <mapping class="me.mawood.loraCapture.packet.segment.Segment" />
+        <mapping class="me.mawood.loraCapture.persistence.RainMeasurement" />
 
     </session-factory>
 </hibernate-configuration>
