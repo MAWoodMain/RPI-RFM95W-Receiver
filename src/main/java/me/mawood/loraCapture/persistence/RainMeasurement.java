@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "rain")
@@ -57,11 +58,11 @@ public class RainMeasurement implements Persistable
     @Basic
     @Column(name = "timestamp", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    public ZonedDateTime getDateTime()
+    public Date getDateTime()
     {
-        return timestamp.atZone(ZoneId.systemDefault());
+        return Date.from(timestamp);
     }
-    public void setDateTime(ZonedDateTime dt)
+    public void setDateTime(Date dt)
     {
     }
 
