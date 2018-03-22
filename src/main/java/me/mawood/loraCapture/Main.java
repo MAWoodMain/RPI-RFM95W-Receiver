@@ -62,6 +62,7 @@ public class Main
                         measurements.add(new RainMeasurement(reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
                         count++;
                     }
+                    measurements.forEach(System.out::println);
                     System.out.println(measurements);
                 } catch (Exception e)
                 {
