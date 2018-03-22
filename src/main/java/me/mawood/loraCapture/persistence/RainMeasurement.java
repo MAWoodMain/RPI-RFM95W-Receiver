@@ -46,7 +46,7 @@ public class RainMeasurement implements Persistable
         return measurement;
     }
 
-    public void getMeasurement(short measurement) {
+    public void setMeasurement(short measurement) {
         this.measurement = measurement;
     }
 
