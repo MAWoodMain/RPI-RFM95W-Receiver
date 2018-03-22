@@ -80,7 +80,7 @@ public class RainMeasurement implements Persistable
     public short getBatteryLevel() {
         return batteryLevel;
     }
-    public void getBatteryLevel(short batteryLevel) {
+    public void setBatteryLevel(short batteryLevel) {
         this.batteryLevel = batteryLevel;
     }
 
