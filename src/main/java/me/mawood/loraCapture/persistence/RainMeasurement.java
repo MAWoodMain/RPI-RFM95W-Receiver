@@ -19,6 +19,22 @@ public class RainMeasurement
     public RainMeasurement() {
     }
 
+    public short getMeasurement() {
+        return measurement;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public short getBatteryLevel() {
+        return batteryLevel;
+    }
+
     @Override
     public String toString() {
         return "RainMeasurement{" +

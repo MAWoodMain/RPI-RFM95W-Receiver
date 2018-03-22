@@ -14,6 +14,7 @@ import me.mawood.loraCapture.spark.CaptureEndpoint;
 
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -62,7 +63,7 @@ public class Main
                         measurements.add(new RainMeasurement(reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
                         count++;
                     }
-                    measurements.forEach(System.out::println);
+                    measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(System.out::println);
                     System.out.println(measurements);
                 } catch (Exception e)
                 {
