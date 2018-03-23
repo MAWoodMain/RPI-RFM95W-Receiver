@@ -13,6 +13,9 @@ import me.mawood.loraCapture.persistence.RainMeasurement;
 import me.mawood.loraCapture.spark.CaptureEndpoint;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import spark.Spark;
 
 import java.time.Instant;
 import java.util.Base64;
@@ -23,22 +26,32 @@ import java.util.logging.Level;
 
 public class Main
 {
+    private static final Logger LOG = LoggerFactory.getLogger("mawood.loraCapture");
     public static void main(String[] args)
     {
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.INFO);
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.WARNING);
+        java.util.logging.Logger.getLogger("spark.Spark").setLevel(Level.WARNING);
+        java.util.logging.Logger.getLogger("mawood.loraCapture").setLevel(Level.FINEST);
+
+        LOG.info("Starting");
 
         PersistenceManager pm = new PersistenceManager();
         CaptureEndpoint endpoint = new CaptureEndpoint(pm);
-        endpoint.registerInterest(System.out::println);
+        endpoint.registerInterest(p->
+        {
+            LOG.info("Packet Received:");
+            LOG.debug(p.toString());
+        });
         endpoint.registerInterest(p -> {
             if(p.getApplicationName().equals("RobTheUnicorn"))
             {
+                LOG.info("Unicorn packet");
                 try
                 {
                     DecodedPacket decodedPacket = new DecodedPacket(p);
                     System.out.println(decodedPacket);
                     pm.store(decodedPacket);
-                    System.out.println("Stored");
+                    LOG.debug("Stored packet");
                 } catch (InvalidSegmentException | PacketException | InvalidBlockException e)
                 {
                     e.printStackTrace();
@@ -46,13 +59,14 @@ public class Main
             }
             else if(p.getApplicationName().equals("Rain-Gauge"))
             {
+                LOG.info("Rain packet");
                 try
                 {
                     Session session = PersistenceManager.getSession();
                     Query q = session.createQuery("SELECT * FROM rain WHERE fCnt=" + p.getfCnt());
                     if (q.list().size() > 0)
                     {
-                        System.out.println("Packet replay skipping");
+                        LOG.info("Packet replay skipping");
                         return;
                     }
 
@@ -75,16 +89,17 @@ public class Main
                     }
                     measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(m ->
                     {
-                        System.out.println(m);
+                        LOG.debug(m.toString());
                         pm.store(m);
                     });
+                    LOG.info("Stored data");
                 } catch (Exception e)
                 {
                     e.printStackTrace();
                 }
             } else
             {
-                System.out.println("Unknown protocol '" + p.getApplicationName() + "'");
+                LOG.info("Unknown protocol '" + p.getApplicationName() + "'");
             }
         });
     }
