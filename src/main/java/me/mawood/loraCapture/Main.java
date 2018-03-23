@@ -13,9 +13,7 @@ import me.mawood.loraCapture.persistence.RainMeasurement;
 import me.mawood.loraCapture.spark.CaptureEndpoint;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Spark;
 
 import java.time.Instant;
 import java.util.Base64;
@@ -23,10 +21,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main
 {
-    private static final Logger LOG = LoggerFactory.getLogger("mawood.loraCapture");
+    private static final Logger LOG = Logger.getLogger("mawood.loraCapture");
     public static void main(String[] args)
     {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.WARNING);
@@ -40,7 +39,7 @@ public class Main
         endpoint.registerInterest(p->
         {
             LOG.info("Packet Received:");
-            LOG.debug(p.toString());
+            LOG.fine(p.toString());
         });
         endpoint.registerInterest(p -> {
             if(p.getApplicationName().equals("RobTheUnicorn"))
@@ -51,7 +50,7 @@ public class Main
                     DecodedPacket decodedPacket = new DecodedPacket(p);
                     System.out.println(decodedPacket);
                     pm.store(decodedPacket);
-                    LOG.debug("Stored packet");
+                    LOG.fine("Stored packet");
                 } catch (InvalidSegmentException | PacketException | InvalidBlockException e)
                 {
                     e.printStackTrace();
@@ -89,7 +88,7 @@ public class Main
                     }
                     measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(m ->
                     {
-                        LOG.debug(m.toString());
+                        LOG.fine(m.toString());
                         pm.store(m);
                     });
                     LOG.info("Stored data");
