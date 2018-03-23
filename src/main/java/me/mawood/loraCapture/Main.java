@@ -30,7 +30,7 @@ public class Main
     {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.WARNING);
         java.util.logging.Logger.getLogger("spark.Spark").setLevel(Level.WARNING);
-        java.util.logging.Logger.getLogger("mawood.loraCapture").setLevel(Level.FINEST);
+        LOG.setLevel(Level.FINEST);
 
         LOG.info("Starting");
 
