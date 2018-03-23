@@ -11,6 +11,8 @@ import me.mawood.loraCapture.packet.segment.segments.RainSegment;
 import me.mawood.loraCapture.persistence.PersistenceManager;
 import me.mawood.loraCapture.persistence.RainMeasurement;
 import me.mawood.loraCapture.spark.CaptureEndpoint;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import java.time.Instant;
 import java.util.Base64;
@@ -23,7 +25,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.FINEST);
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.INFO);
 
         PersistenceManager pm = new PersistenceManager();
         CaptureEndpoint endpoint = new CaptureEndpoint(pm);
@@ -46,6 +48,14 @@ public class Main
             {
                 try
                 {
+                    Session session = PersistenceManager.getSession();
+                    Query q = session.createQuery("SELECT * FROM rain WHERE fCnt=" + p.getfCnt());
+                    if (q.list().size() > 0)
+                    {
+                        System.out.println("Packet replay skipping");
+                        return;
+                    }
+
                     PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode(p.getData().getBytes()));
                     Segment[] segments = psr.getSegments();
                     RainSegment rs = (RainSegment) segments[2];

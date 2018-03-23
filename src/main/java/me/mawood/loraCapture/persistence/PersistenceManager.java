@@ -47,43 +47,4 @@ public class PersistenceManager
     public void exit() {
         sessionFactory.close();
     }
-
-    public static void main(String[] args)
-    {
-        PersistenceManager pm = new PersistenceManager();
-
-        DataRate dr = new DataRate();
-        dr.setBandwidth(125);
-        dr.setModulation("LORA");
-        dr.setSpreadFactor(9);
-        TxInfo tx = new TxInfo();
-        tx.setDataRate(dr);
-        tx.setAdr(true);
-        tx.setCodeRate("4/5");
-        tx.setFrequency(868200000);
-
-        RxInfo rxInfo = new RxInfo();
-        rxInfo.setAltitude(1);
-        rxInfo.setLatitude(1.2);
-        rxInfo.setLongitude(2.3);
-        rxInfo.setLoRaSNR(2);
-        rxInfo.setMac("abc");
-        rxInfo.setName("test");
-        rxInfo.setRssi(-115);
-        rxInfo.setTime("11:52:11");
-
-        LoRaPacket packet = new LoRaPacket();
-        packet.setTxInfo(tx);
-        packet.setRxInfos(Collections.singleton(rxInfo));
-        packet.setApplicationID("1");
-        packet.setData("hello");
-        packet.setApplicationName("test");
-        packet.setDevEUI("abcd");
-        packet.setfCnt(1);
-        packet.setfPort(1);
-        packet.setNodeName("test_node");
-
-
-        pm.store(packet);
-    }
 }
