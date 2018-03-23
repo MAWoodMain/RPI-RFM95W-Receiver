@@ -63,7 +63,7 @@ public class Main
                 try
                 {
                     Session session = PersistenceManager.getSession();
-                    Query q = session.createQuery("SELECT * FROM rain WHERE fCnt=" + p.getfCnt());
+                    Query q = session.createQuery("SELECT fCnt FROM rain WHERE fCnt=" + p.getfCnt());
                     if (q.list().size() > 0)
                     {
                         LOG.info("Packet replay skipping");
