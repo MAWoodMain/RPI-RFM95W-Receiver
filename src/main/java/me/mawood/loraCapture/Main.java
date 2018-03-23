@@ -63,11 +63,13 @@ public class Main
                 {
                     Session session = PersistenceManager.getSession();
                     Query q = session.createQuery("SELECT fCnt FROM RainMeasurement WHERE fCnt=" + p.getfCnt());
+                    session.close();
                     if (q.list().size() > 0)
                     {
                         LOG.info("Packet replay skipping");
                         return;
                     }
+
 
                     PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode(p.getData().getBytes()));
                     Segment[] segments = psr.getSegments();
