@@ -60,7 +60,7 @@ public class Main
                     Set<RainMeasurement> measurements = new HashSet<>();
                     for(short reading:readings)
                     {
-                        measurements.add(new RainMeasurement(reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
+                        measurements.add(new RainMeasurement(p.getfCnt(), reading, Instant.parse(p.getRxInfo()[0].getTime()).minusSeconds(count*interval), temperature, batteryLevel));
                         count++;
                     }
                     measurements.stream().sorted(Comparator.comparing(RainMeasurement::getTimestamp)).forEach(m ->

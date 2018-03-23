@@ -12,12 +12,15 @@ public class RainMeasurement implements Persistable
 {
     private int rainId;
 
+    private int fCnt;
+
     private short measurement;
     private Instant timestamp;
     private float temperature;
     private short batteryLevel;
 
-    public RainMeasurement(short measurement, Instant timestamp, float temperature, short batteryLevel) {
+    public RainMeasurement(int fCnt, short measurement, Instant timestamp, float temperature, short batteryLevel) {
+        this.fCnt = fCnt;
         this.measurement = measurement;
         this.timestamp = timestamp;
         this.temperature = temperature;
@@ -38,6 +41,16 @@ public class RainMeasurement implements Persistable
 
     public void setRainId(int rainId) {
         this.rainId = rainId;
+    }
+
+    @Basic
+    @Column(name = "fCnt")
+    public int getfCnt() {
+        return fCnt;
+    }
+
+    public void setfCnt(int fCnt) {
+        this.fCnt = fCnt;
     }
 
     @Basic
