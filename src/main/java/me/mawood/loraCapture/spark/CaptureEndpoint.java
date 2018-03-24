@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import me.mawood.loraCapture.persistence.PersistenceManager;
 import me.mawood.loraCapture.persistence.loRaPacket.LoRaPacket;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,7 +27,13 @@ public class CaptureEndpoint
             Gson gson = new Gson();
             System.out.println(request.body());
             LoRaPacket p = gson.fromJson(request.body(), LoRaPacket.class);
-
+            if(p.getRxInfo().length > 0)
+            {
+                if(p.getRxInfo()[0].getTime() == null | p.getRxInfo()[0].getTime().length() < 5)
+                {
+                    p.getRxInfo()[0].setTime(Instant.now().toString());
+                }
+            }
             pm.store(p);
             alertListeners(p);
             response.type("application/json");

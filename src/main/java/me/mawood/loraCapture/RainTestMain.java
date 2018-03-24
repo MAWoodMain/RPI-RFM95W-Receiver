@@ -23,7 +23,7 @@ public class RainTestMain
                 (byte)0xD6, (byte)0x4D, (byte)0x53, (byte)0xDD, (byte)0x37, (byte)0x23, (byte)0x88, (byte)0x38,
                 (byte)0x4E, (byte)0x6C, (byte)0xE2, (byte)0x8D, (byte)0xC3, (byte)0xDD, (byte)0x38, (byte)0xD3,
                 (byte)0x78, (byte)0x8D, (byte)0x05, (byte)0x04, (byte)0x41, (byte)0xA1, (byte)0x36, (byte)0x27});*/
-        PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode("2gGqAAQDBAAAw++qAAECAgM3qgAPABPMecdBdBzBzAAHAAAAAAAAAACABQRBosZZ"));
+        PacketStreamReader psr = new PacketStreamReader(Base64.getDecoder().decode("2gGqAAQDBAABGBmqAAECAgMuqgAPABMtsiP3Aaptp//8Y/8dFcWSnPa7BQRBu8l5"));
         System.out.println(Arrays.toString(psr.getSegments()));
     }
 }
