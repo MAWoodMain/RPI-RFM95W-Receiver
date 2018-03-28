@@ -196,13 +196,13 @@ public class LoRaPacket implements Persistable
 
         RxInfo[] rxs = getRxInfos().toArray(new RxInfo[getRxInfos().size()]);
 
-        for(int i = 0; i < rxs.length; i++)
+        /*for(int i = 0; i < rxs.length; i++)
             for(RxInfo r:RxInfos)
                 if(rxs[i].equals(r))
                 {
                     rxs[i] = r;
                     break;
-                }
+                }*/
 
         Set<RxInfo> newRx = new HashSet<>();
         newRx.addAll(Arrays.asList(rxs));
