@@ -29,11 +29,16 @@ public class CaptureEndpoint
             LoRaPacket p = gson.fromJson(request.body(), LoRaPacket.class);
             if(p.getRxInfo().length > 0)
             {
-                if(p.getRxInfo()[0].getTime() == null | p.getRxInfo()[0].getTime().length() < 5)
+                if(p.getRxInfo()[0].getTime() == null)
+                {
+                    p.getRxInfo()[0].setTime(Instant.now().toString());
+                } else if (p.getRxInfo()[0].getTime().length() < 5)
                 {
                     p.getRxInfo()[0].setTime(Instant.now().toString());
                 }
+
             }
+            System.out.println(p);
             pm.store(p);
             alertListeners(p);
             response.type("application/json");
