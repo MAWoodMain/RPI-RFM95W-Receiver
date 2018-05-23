@@ -98,4 +98,17 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>artifactory-releases</name>
+            <url>https://artifactory.mawood.me/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>artifactory-snapshots</name>
+            <url>https://artifactory.mawood.me/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>

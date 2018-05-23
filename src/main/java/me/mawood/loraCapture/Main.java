@@ -78,7 +78,7 @@ public class Main
                     float temperature = rs.getTemperature();
                     short[] readings = rs.getRainMeasurements();
 
-                    final int interval = 120;
+                    final int interval = 10;
 
                     int count = 0;
                     Set<RainMeasurement> measurements = new HashSet<>();
